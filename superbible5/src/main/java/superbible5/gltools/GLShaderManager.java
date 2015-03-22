@@ -1,0 +1,44 @@
+package superbible5.gltools;
+
+public class GLShaderManager {
+
+	public static enum GLT_STOCK_SHADER
+	{
+		GLT_SHADER_IDENTITY,
+		GLT_SHADER_FLAT,
+		GLT_SHADER_SHADED,
+		GLT_SHADER_DEFAULT_LIGHT,
+		GLT_SHADER_POINT_LIGHT_DIFF,
+		GLT_SHADER_TEXTURE_REPLACE,
+		GLT_SHADER_TEXTURE_MODULATE,
+		GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
+		GLT_SHADER_TEXTURE_RECT_REPLACE,
+		GLT_SHADER_LAST
+	}
+
+	public static enum GLT_SHADER_ATTRIBUTE
+	{
+		GLT_ATTRIBUTE_VERTEX,
+		GLT_ATTRIBUTE_COLOR,
+		GLT_ATTRIBUTE_NORMAL,
+		GLT_ATTRIBUTE_TEXTURE0,
+		GLT_ATTRIBUTE_TEXTURE1,
+		GLT_ATTRIBUTE_TEXTURE2,
+		GLT_ATTRIBUTE_TEXTURE3,
+		GLT_ATTRIBUTE_LAST
+	}
+
+
+	public GLShaderManager()
+	{
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public boolean InitializeStockShaders()
+	{
+		
+		return true;
+	}
+
+}
