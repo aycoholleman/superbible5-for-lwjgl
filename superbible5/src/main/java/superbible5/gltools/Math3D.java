@@ -479,37 +479,85 @@ public final class Math3D {
 	}
 
 
-	public static void m3dGetMatrixColumn33(float[] dst, float[] src, int column)
+	public static void m3dGetMatrixColumn33(float[] dstVec3, float[] srcMatrix33, int column)
 	{
+		memcpy3(dstVec3, 0, srcMatrix33, (3 * column));
 	}
 
 
-	//	public static void m3dGetMatrixColumn33(double[] dst, M3DMatrix33d src, int column)
-	//	{ memcpy(dst, src + (3 * column), sizeof(double) * 3); }
-	//
-	//
-	//	public static void m3dSetMatrixColumn33(float[] dst, float[] src, int column)
-	//	{ memcpy(dst + (3 * column), src, sizeof(float) * 3); }
-	//
-	//
-	//	public static void m3dSetMatrixColumn33(M3DMatrix33d dst, double[] src, int column)
-	//	{ memcpy(dst + (3 * column), src, sizeof(double) * 3); }
-	//
-	//
-	//	public static void m3dGetMatrixColumn44(float[] dst, double[] src, int column)
-	//	{ memcpy(dst, src + (4 * column), sizeof(float) * 4); }
-	//
-	//
-	//	public static void m3dGetMatrixColumn44(double[] dst, M3DMatrix44d src, int column)
-	//	{ memcpy(dst, src + (4 * column), sizeof(double) * 4); }
-	//
-	//
-	//	public static void m3dSetMatrixColumn44(double[] dst, float[] src, int column)
-	//	{ memcpy(dst + (4 * column), src, sizeof(float) * 4); }
-	//
-	//
-	//	public static void m3dSetMatrixColumn44(M3DMatrix44d dst, double[] src, int column)
-	//	{ memcpy(dst + (4 * column), src, sizeof(double) * 4); }
+	public static void m3dGetMatrixColumn33(double[] dstVec3, double[] srcMatrix33, int column)
+	{
+		memcpy3(dstVec3, 0, srcMatrix33, (3 * column));
+	}
+
+
+	public static void m3dSetMatrixColumn33(float[] dstMatrix33, float[] srcVec3, int column)
+	{
+		memcpy3(dstMatrix33, (3 * column), srcVec3, 0);
+	}
+
+
+	public static void m3dSetMatrixColumn33(double[] dstMatrix33, double[] srcVec3, int column)
+	{
+		memcpy3(dstMatrix33, (3 * column), srcVec3, 0);
+	}
+
+
+	public static void m3dGetMatrixColumn44(float[] dstVec4, float[] srcMatrix44, int column)
+	{
+		memcpy4(dstVec4, 0, srcMatrix44, (4 * column));
+	}
+
+
+	public static void m3dGetMatrixColumn44(double[] dstVec4, double[] srcMatrix44, int column)
+	{
+		memcpy4(dstVec4, 0, srcMatrix44, (4 * column));
+	}
+
+
+	public static void m3dSetMatrixColumn44(float[] dstMatrix44, float[] srcVec4, int column)
+	{
+		memcpy4(dstMatrix44, (4 * column), srcVec4, 0);
+	}
+
+
+	public static void m3dSetMatrixColumn44(double[] dstMatrix44, double[] srcVec4, int column)
+	{
+		memcpy4(dstMatrix44, (4 * column), srcVec4, 0);
+	}
+
+
+	public static void m3dExtractRotationMatrix33(float[] dstMatrix33, float[] srcMatrix44)
+	{
+		memcpy3(dstMatrix33, srcMatrix44); // X column
+		memcpy3(dstMatrix33, 3, srcMatrix44, 4); // Y column
+		memcpy3(dstMatrix33, 6, srcMatrix44, 8); // Z column
+	}
+
+
+	public static void m3dExtractRotationMatrix33(double[] dstMatrix33, double[] srcMatrix44)
+	{
+		memcpy3(dstMatrix33, srcMatrix44); // X column
+		memcpy3(dstMatrix33, 3, srcMatrix44, 4); // Y column
+		memcpy3(dstMatrix33, 6, srcMatrix44, 8); // Z column
+	}
+
+
+	public static void m3dInjectRotationMatrix44(float[] dstMatrix44, float[] srcMatrix33)
+	{
+		memcpy4(dstMatrix44, srcMatrix33);
+		memcpy4(dstMatrix44, 4, srcMatrix33, 4);
+		memcpy4(dstMatrix44, 8, srcMatrix33, 8);
+	}
+
+
+	public static void m3dInjectRotationMatrix44(double[] dstMatrix44, double[] srcMatrix33)
+	{
+		memcpy4(dstMatrix44, srcMatrix33);
+		memcpy4(dstMatrix44, 4, srcMatrix33, 4);
+		memcpy4(dstMatrix44, 8, srcMatrix33, 8);
+	}
+
 
 	////////////////////////////////////////////////////////////////////////////
 	// Helper functions (not within math3d.h or math3d.cpp)
@@ -743,7 +791,7 @@ public final class Math3D {
 
 	public static void memcpy16(float[] dst, float[] src)
 	{
-		memcpy9(dst, 0, src, 0);
+		memcpy16(dst, 0, src, 0);
 	}
 
 
@@ -783,7 +831,7 @@ public final class Math3D {
 
 	public static void memcpy16(double[] dst, double[] src)
 	{
-		memcpy9(dst, 0, src, 0);
+		memcpy16(dst, 0, src, 0);
 	}
 
 
