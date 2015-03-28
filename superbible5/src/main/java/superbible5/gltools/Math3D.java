@@ -1,5 +1,7 @@
 package superbible5.gltools;
 
+import static superbible5.gltools.C2J.*;
+
 public final class Math3D {
 
 	public static final double M3D_PI = Math.PI;
@@ -479,371 +481,321 @@ public final class Math3D {
 	}
 
 
-	public static void m3dGetMatrixColumn33(float[] dstVec3, float[] srcMatrix33, int column)
+	public static void m3dGetMatrixColumn33(float[] vec3, float[] mat33, int column)
 	{
-		memcpy3(dstVec3, 0, srcMatrix33, (3 * column));
+		memcpy3(vec3, 0, mat33, (3 * column));
 	}
 
 
-	public static void m3dGetMatrixColumn33(double[] dstVec3, double[] srcMatrix33, int column)
+	public static void m3dGetMatrixColumn33(double[] vec3, double[] mat33, int column)
 	{
-		memcpy3(dstVec3, 0, srcMatrix33, (3 * column));
+		memcpy3(vec3, 0, mat33, (3 * column));
 	}
 
 
-	public static void m3dSetMatrixColumn33(float[] dstMatrix33, float[] srcVec3, int column)
+	public static void m3dSetMatrixColumn33(float[] mat33, float[] vec3, int column)
 	{
-		memcpy3(dstMatrix33, (3 * column), srcVec3, 0);
+		memcpy3(mat33, (3 * column), vec3, 0);
 	}
 
 
-	public static void m3dSetMatrixColumn33(double[] dstMatrix33, double[] srcVec3, int column)
+	public static void m3dSetMatrixColumn33(double[] mat33, double[] vec3, int column)
 	{
-		memcpy3(dstMatrix33, (3 * column), srcVec3, 0);
+		memcpy3(mat33, (3 * column), vec3, 0);
 	}
 
 
-	public static void m3dGetMatrixColumn44(float[] dstVec4, float[] srcMatrix44, int column)
+	public static void m3dGetMatrixColumn44(float[] vec4, float[] mat44, int column)
 	{
-		memcpy4(dstVec4, 0, srcMatrix44, (4 * column));
+		memcpy4(vec4, 0, mat44, (4 * column));
 	}
 
 
-	public static void m3dGetMatrixColumn44(double[] dstVec4, double[] srcMatrix44, int column)
+	public static void m3dGetMatrixColumn44(double[] vec4, double[] mat44, int column)
 	{
-		memcpy4(dstVec4, 0, srcMatrix44, (4 * column));
+		memcpy4(vec4, 0, mat44, (4 * column));
 	}
 
 
-	public static void m3dSetMatrixColumn44(float[] dstMatrix44, float[] srcVec4, int column)
+	public static void m3dSetMatrixColumn44(float[] mat44, float[] vec4, int column)
 	{
-		memcpy4(dstMatrix44, (4 * column), srcVec4, 0);
+		memcpy4(mat44, (4 * column), vec4, 0);
 	}
 
 
-	public static void m3dSetMatrixColumn44(double[] dstMatrix44, double[] srcVec4, int column)
+	public static void m3dSetMatrixColumn44(double[] mat44, double[] vec4, int column)
 	{
-		memcpy4(dstMatrix44, (4 * column), srcVec4, 0);
+		memcpy4(mat44, (4 * column), vec4, 0);
 	}
 
 
-	public static void m3dExtractRotationMatrix33(float[] dstMatrix33, float[] srcMatrix44)
+	public static void m3dExtractRotationMatrix33(float[] mat33, float[] mat44)
 	{
-		memcpy3(dstMatrix33, srcMatrix44); // X column
-		memcpy3(dstMatrix33, 3, srcMatrix44, 4); // Y column
-		memcpy3(dstMatrix33, 6, srcMatrix44, 8); // Z column
+		memcpy3(mat33, mat44); // X column
+		memcpy3(mat33, 3, mat44, 4); // Y column
+		memcpy3(mat33, 6, mat44, 8); // Z column
 	}
 
 
-	public static void m3dExtractRotationMatrix33(double[] dstMatrix33, double[] srcMatrix44)
+	public static void m3dExtractRotationMatrix33(double[] mat33, double[] mat44)
 	{
-		memcpy3(dstMatrix33, srcMatrix44); // X column
-		memcpy3(dstMatrix33, 3, srcMatrix44, 4); // Y column
-		memcpy3(dstMatrix33, 6, srcMatrix44, 8); // Z column
+		memcpy3(mat33, mat44); // X column
+		memcpy3(mat33, 3, mat44, 4); // Y column
+		memcpy3(mat33, 6, mat44, 8); // Z column
 	}
 
 
-	public static void m3dInjectRotationMatrix44(float[] dstMatrix44, float[] srcMatrix33)
+	public static void m3dInjectRotationMatrix44(float[] mat44, float[] mat33)
 	{
-		memcpy4(dstMatrix44, srcMatrix33);
-		memcpy4(dstMatrix44, 4, srcMatrix33, 4);
-		memcpy4(dstMatrix44, 8, srcMatrix33, 8);
+		memcpy4(mat44, mat33);
+		memcpy4(mat44, 4, mat33, 4);
+		memcpy4(mat44, 8, mat33, 8);
 	}
 
 
-	public static void m3dInjectRotationMatrix44(double[] dstMatrix44, double[] srcMatrix33)
+	public static void m3dInjectRotationMatrix44(double[] mat44, double[] mat33)
 	{
-		memcpy4(dstMatrix44, srcMatrix33);
-		memcpy4(dstMatrix44, 4, srcMatrix33, 4);
-		memcpy4(dstMatrix44, 8, srcMatrix33, 8);
+		memcpy4(mat44, mat33);
+		memcpy4(mat44, 4, mat33, 4);
+		memcpy4(mat44, 8, mat33, 8);
 	}
 
 
-	////////////////////////////////////////////////////////////////////////////
-	// Helper functions (not within math3d.h or math3d.cpp)
-	////////////////////////////////////////////////////////////////////////////
-
-	public static void memcpy2(float[] dst, float[] src)
+	public static void m3dTransformVector3(float[] vec3Out, float[] vec3In, float[] mat44)
 	{
-		dst[0] = src[0];
-		dst[1] = src[1];
+		vec3Out[0] = mat44[0] * vec3In[0] + mat44[4] * vec3In[1] + mat44[8] * vec3In[2] + mat44[12];
+		vec3Out[1] = mat44[1] * vec3In[0] + mat44[5] * vec3In[1] + mat44[9] * vec3In[2] + mat44[13];
+		vec3Out[2] = mat44[2] * vec3In[0] + mat44[6] * vec3In[1] + mat44[10] * vec3In[2] + mat44[14];
 	}
 
 
-	public static void memcpy2(double[] dst, double[] src)
+	public static void m3dTransformVector3(double[] vec3Out, double[] vec3In, double[] mat44)
 	{
-		dst[0] = src[0];
-		dst[1] = src[1];
+		vec3Out[0] = mat44[0] * vec3In[0] + mat44[4] * vec3In[1] + mat44[8] * vec3In[2] + mat44[12];
+		vec3Out[1] = mat44[1] * vec3In[0] + mat44[5] * vec3In[1] + mat44[9] * vec3In[2] + mat44[13];
+		vec3Out[2] = mat44[2] * vec3In[0] + mat44[6] * vec3In[1] + mat44[10] * vec3In[2] + mat44[14];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 3 (i.e. three
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy3(float[] dst, int dstPos, float[] src, int srcPos)
+	public static void m3dTransformVector4(float[] vec4Out, float[] vec4In, float[] mat44)
 	{
-		// Actually we don't use System.arraycopy because for small arrays
-		// a manual copy is significantly faster
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
+		vec4Out[0] = mat44[0] * vec4In[0] + mat44[4] * vec4In[1] + mat44[8] * vec4In[2] + mat44[12]
+				* vec4In[3];
+		vec4Out[1] = mat44[1] * vec4In[0] + mat44[5] * vec4In[1] + mat44[9] * vec4In[2] + mat44[13]
+				* vec4In[3];
+		vec4Out[2] = mat44[2] * vec4In[0] + mat44[6] * vec4In[1] + mat44[10] * vec4In[2] + mat44[14]
+				* vec4In[3];
+		vec4Out[3] = mat44[3] * vec4In[0] + mat44[7] * vec4In[1] + mat44[11] * vec4In[2] + mat44[15]
+				* vec4In[3];
 	}
 
 
-	public static void memcpy3(float[] dst, float[] src)
+	public static void m3dTransformVector4(double[] vec4Out, double[] vec4In, double[] mat44)
 	{
-		memcpy3(dst, 0, src, 0);
+		vec4Out[0] = mat44[0] * vec4In[0] + mat44[4] * vec4In[1] + mat44[8] * vec4In[2] + mat44[12]
+				* vec4In[3];
+		vec4Out[1] = mat44[1] * vec4In[0] + mat44[5] * vec4In[1] + mat44[9] * vec4In[2] + mat44[13]
+				* vec4In[3];
+		vec4Out[2] = mat44[2] * vec4In[0] + mat44[6] * vec4In[1] + mat44[10] * vec4In[2] + mat44[14]
+				* vec4In[3];
+		vec4Out[3] = mat44[3] * vec4In[0] + mat44[7] * vec4In[1] + mat44[11] * vec4In[2] + mat44[15]
+				* vec4In[3];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 3 (i.e. three
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy3(double[] dst, int dstPos, double[] src, int srcPos)
+	public static double[] m3dTransformVector4(double[] vec4In, double[] mat44)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
+		double[] vec4Out = new double[4];
+		m3dTransformVector4(vec4Out, vec4In, mat44);
+		return vec4Out;
 	}
 
 
-	public static void memcpy3(double[] dst, double[] src)
+	public static void m3dRotateVector(float[] vec3Out, float[] vec3In, float[] mat33)
 	{
-		memcpy3(dst, 0, src, 0);
+		vec3Out[0] = mat33[0] * vec3In[0] + mat33[3] * vec3In[1] + mat33[6] * vec3In[2];
+		vec3Out[1] = mat33[1] * vec3In[0] + mat33[4] * vec3In[1] + mat33[7] * vec3In[2];
+		vec3Out[2] = mat33[2] * vec3In[0] + mat33[5] * vec3In[1] + mat33[8] * vec3In[2];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 4 (i.e. four
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy4(float[] dst, int dstPos, float[] src, int srcPos)
+	public static float[] m3dRotateVector(float[] vec3In, float[] mat33)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
-		dst[dstPos + 3] = src[srcPos + 3];
+		float[] vec3Out = new float[3];
+		m3dRotateVector(vec3Out, vec3In, mat33);
+		return vec3Out;
 	}
 
 
-	public static void memcpy4(float[] dst, float[] src)
+	public static void m3dRotateVector(double[] vec3Out, double[] vec3In, double[] mat33)
 	{
-		memcpy4(dst, 0, src, 0);
+		vec3Out[0] = mat33[0] * vec3In[0] + mat33[3] * vec3In[1] + mat33[6] * vec3In[2];
+		vec3Out[1] = mat33[1] * vec3In[0] + mat33[4] * vec3In[1] + mat33[7] * vec3In[2];
+		vec3Out[2] = mat33[2] * vec3In[0] + mat33[5] * vec3In[1] + mat33[8] * vec3In[2];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 4 (i.e. four
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy4(double[] dst, int dstPos, double[] src, int srcPos)
+	public static void m3dScaleMatrix33(float[] mat33, float xScale, float yScale, float zScale)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
-		dst[dstPos + 3] = src[srcPos + 3];
+		m3dLoadIdentity33(mat33);
+		mat33[0] = xScale;
+		mat33[4] = yScale;
+		mat33[8] = zScale;
 	}
 
 
-	public static void memcpy4(double[] dst, double[] src)
+	public static void m3dScaleMatrix33(float[] mat33, float[] vec3)
 	{
-		memcpy4(dst, 0, src, 0);
+		m3dLoadIdentity33(mat33);
+		mat33[0] = vec3[0];
+		mat33[4] = vec3[1];
+		mat33[8] = vec3[2];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 9 (i.e. nine
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy9(float[] dst, int dstPos, float[] src, int srcPos)
+	public static void m3dScaleMatrix33(double[] mat33, double xScale, double yScale, double zScale)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
-		dst[dstPos + 3] = src[srcPos + 3];
-		dst[dstPos + 4] = src[srcPos + 4];
-		dst[dstPos + 5] = src[srcPos + 5];
-		dst[dstPos + 6] = src[srcPos + 6];
-		dst[dstPos + 7] = src[srcPos + 7];
-		dst[dstPos + 8] = src[srcPos + 8];
+		m3dLoadIdentity33(mat33);
+		mat33[0] = xScale;
+		mat33[4] = yScale;
+		mat33[8] = zScale;
 	}
 
 
-	public static void memcpy9(float[] dst, float[] src)
+	public static void m3dScaleMatrix33(double[] mat33, double[] vec3)
 	{
-		memcpy9(dst, 0, src, 0);
+		m3dLoadIdentity33(mat33);
+		mat33[0] = vec3[0];
+		mat33[4] = vec3[1];
+		mat33[8] = vec3[2];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 9 (i.e. nine
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy9(double[] dst, int dstPos, double[] src, int srcPos)
+	public static void m3dScaleMatrix44(float[] mat44, float xScale, float yScale, float zScale)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
-		dst[dstPos + 3] = src[srcPos + 3];
-		dst[dstPos + 4] = src[srcPos + 4];
-		dst[dstPos + 5] = src[srcPos + 5];
-		dst[dstPos + 6] = src[srcPos + 6];
-		dst[dstPos + 7] = src[srcPos + 7];
-		dst[dstPos + 8] = src[srcPos + 8];
+		m3dLoadIdentity44(mat44);
+		mat44[0] = xScale;
+		mat44[5] = yScale;
+		mat44[10] = zScale;
 	}
 
 
-	public static void memcpy9(double[] dst, double[] src)
+	public static void m3dScaleMatrix44(float[] mat44, float[] vec3)
 	{
-		memcpy9(dst, 0, src, 0);
+		m3dLoadIdentity44(mat44);
+		mat44[0] = vec3[0];
+		mat44[5] = vec3[1];
+		mat44[10] = vec3[2];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 16 (i.e. 16
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy16(float[] dst, int dstPos, float[] src, int srcPos)
+	public static void m3dScaleMatrix44(double[] mat44, double xScale, double yScale, double zScale)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
-		dst[dstPos + 3] = src[srcPos + 3];
-		dst[dstPos + 4] = src[srcPos + 4];
-		dst[dstPos + 5] = src[srcPos + 5];
-		dst[dstPos + 6] = src[srcPos + 6];
-		dst[dstPos + 7] = src[srcPos + 7];
-		dst[dstPos + 8] = src[srcPos + 8];
-		dst[dstPos + 9] = src[srcPos + 9];
-		dst[dstPos + 10] = src[srcPos + 10];
-		dst[dstPos + 11] = src[srcPos + 11];
-		dst[dstPos + 12] = src[srcPos + 12];
-		dst[dstPos + 13] = src[srcPos + 13];
-		dst[dstPos + 14] = src[srcPos + 14];
-		dst[dstPos + 15] = src[srcPos + 15];
+		m3dLoadIdentity44(mat44);
+		mat44[0] = xScale;
+		mat44[5] = yScale;
+		mat44[10] = zScale;
 	}
 
 
-	public static void memcpy16(float[] dst, float[] src)
+	public static void m3dScaleMatrix44(double[] mat44, double[] vec3)
 	{
-		memcpy16(dst, 0, src, 0);
+		m3dLoadIdentity44(mat44);
+		mat44[0] = vec3[0];
+		mat44[5] = vec3[1];
+		mat44[10] = vec3[2];
 	}
 
 
-	/**
-	 * Equivalent to System.arraycopy with length parameter set to 16 (i.e. 16
-	 * elements will be copied from src to dest).
-	 * 
-	 * @param dst
-	 *            Destination (write-to) array
-	 * @param dstPos
-	 *            Index from which to insert into destination array
-	 * @param src
-	 *            Source (read-from) array
-	 * @param srcPos
-	 *            Index from which the read the source array
-	 */
-	public static void memcpy16(double[] dst, int dstPos, double[] src, int srcPos)
+	public static void m3dLoadIdentity33(float[] m)
 	{
-		dst[dstPos + 0] = src[srcPos + 0];
-		dst[dstPos + 1] = src[srcPos + 1];
-		dst[dstPos + 2] = src[srcPos + 2];
-		dst[dstPos + 3] = src[srcPos + 3];
-		dst[dstPos + 4] = src[srcPos + 4];
-		dst[dstPos + 5] = src[srcPos + 5];
-		dst[dstPos + 6] = src[srcPos + 6];
-		dst[dstPos + 7] = src[srcPos + 7];
-		dst[dstPos + 8] = src[srcPos + 8];
-		dst[dstPos + 9] = src[srcPos + 9];
-		dst[dstPos + 10] = src[srcPos + 10];
-		dst[dstPos + 11] = src[srcPos + 11];
-		dst[dstPos + 12] = src[srcPos + 12];
-		dst[dstPos + 13] = src[srcPos + 13];
-		dst[dstPos + 14] = src[srcPos + 14];
-		dst[dstPos + 15] = src[srcPos + 15];
+		// TODO Auto-generated method stub
 	}
 
 
-	public static void memcpy16(double[] dst, double[] src)
+	public static void m3dLoadIdentity33(double[] m)
 	{
-		memcpy16(dst, 0, src, 0);
+		// TODO Auto-generated method stub
 	}
 
 
-	public static float sqrtf(float f)
+	public static void m3dLoadIdentity44(float[] m)
 	{
-		return (float) Math.sqrt(f);
+		// TODO Auto-generated method stub
 	}
 
 
-	public static double sqrt(double d)
+	public static void m3dLoadIdentity44(double[] m)
 	{
-		return Math.sqrt(d);
+		// TODO Auto-generated method stub
+	}
+
+
+	public static void m3dMakePerspectiveMatrix(float[] mProjection, float fFov, float fAspect, float zMin,
+			float zMax)
+	{
+		// TODO
+	}
+
+
+	public static void m3dMakeOrthographicMatrix(float[] mProjection, float xMin, float xMax, float yMin,
+			float yMax, float zMin, float zMax)
+	{
+		// TODO
+	}
+
+
+	public static void m3dRotationMatrix33(float[] mat33, float angle, float x, float y, float z)
+	{
+		// TODO
+	}
+
+
+	public static void m3dRotationMatrix33(double[] mat33, double angle, double x, double y, double z)
+	{
+		// TODO
+	}
+
+
+	public static void m3dRotationMatrix44(float[] mat44, float angle, float x, float y, float z)
+	{
+		// TODO
+	}
+
+
+	public static void m3dRotationMatrix44(double[] mat44, double angle, double x, double y, double z)
+	{
+		// TODO
+	}
+
+
+	public static void m3dTranslationMatrix44(float[] mat44, float x, float y, float z)
+	{
+		m3dLoadIdentity44(mat44);
+		mat44[12] = x;
+		mat44[13] = y;
+		mat44[14] = z;
+	}
+
+
+	public static void m3dTranslationMatrix44(double[] mat44, double x, double y, double z)
+	{
+		m3dLoadIdentity44(mat44);
+		mat44[12] = x;
+		mat44[13] = y;
+		mat44[14] = z;
+	}
+
+
+	public static void m3dInvertMatrix44(float[] mInverse, float[] m)
+	{
+		// TODO
+	}
+
+
+	public static void m3dInvertMatrix44(double[] mInverse, double[] m)
+	{
+		// TODO
 	}
 
 }
