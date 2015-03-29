@@ -543,9 +543,17 @@ public final class Math3D {
 	}
 
 
+	// Get index of element in a 4 x 4 matrix
 	private static int E(int row, int col)
 	{
 		return (col << 2) + row;
+	}
+
+
+	// Get index of element in a 3 x 3 matrix
+	private static int F(int row, int col)
+	{
+		return (col * 3) + row;
 	}
 
 
@@ -569,6 +577,28 @@ public final class Math3D {
 			mat44Out[E(i, 1)] = ai0 * b[E(0, 1)] + ai1 * b[E(1, 1)] + ai2 * b[E(2, 1)] + ai3 * b[E(3, 1)];
 			mat44Out[E(i, 2)] = ai0 * b[E(0, 2)] + ai1 * b[E(1, 2)] + ai2 * b[E(2, 2)] + ai3 * b[E(3, 2)];
 			mat44Out[E(i, 3)] = ai0 * b[E(0, 3)] + ai1 * b[E(1, 3)] + ai2 * b[E(2, 3)] + ai3 * b[E(3, 3)];
+		}
+	}
+
+
+	public static void m3dMatrixMultiply33(float[] mat44Out, float[] a, float[] b)
+	{
+		for (int i = 0; i < 3; i++) {
+			float ai0 = a[F(i, 0)], ai1 = a[F(i, 1)], ai2 = a[F(i, 2)];
+			mat44Out[F(i, 0)] = ai0 * b[F(0, 0)] + ai1 * b[F(1, 0)] + ai2 * b[F(2, 0)];
+			mat44Out[F(i, 1)] = ai0 * b[F(0, 1)] + ai1 * b[F(1, 1)] + ai2 * b[F(2, 1)];
+			mat44Out[F(i, 2)] = ai0 * b[F(0, 2)] + ai1 * b[F(1, 2)] + ai2 * b[F(2, 2)];
+		}
+	}
+
+
+	public static void m3dMatrixMultiply33(double[] mat44Out, double[] a, double[] b)
+	{
+		for (int i = 0; i < 3; i++) {
+			double ai0 = a[F(i, 0)], ai1 = a[F(i, 1)], ai2 = a[F(i, 2)];
+			mat44Out[F(i, 0)] = ai0 * b[F(0, 0)] + ai1 * b[F(1, 0)] + ai2 * b[F(2, 0)];
+			mat44Out[F(i, 1)] = ai0 * b[F(0, 1)] + ai1 * b[F(1, 1)] + ai2 * b[F(2, 1)];
+			mat44Out[F(i, 2)] = ai0 * b[F(0, 2)] + ai1 * b[F(1, 2)] + ai2 * b[F(2, 2)];
 		}
 	}
 
@@ -773,10 +803,22 @@ public final class Math3D {
 	}
 
 
-	public static void m3dMakePerspectiveMatrix(float[] mProjection, float fFov, float fAspect, float zMin,
+	public static void m3dMakePerspectiveMatrix(float[] m44Projection, float fFov, float fAspect, float zMin,
 			float zMax)
 	{
-		// TODO
+		m3dLoadIdentity44(m44Projection);
+		float yMax = zMin * (float) Math.tan(fFov * 0.5f);
+		float yMin = -yMax;
+		float xMin = yMin * fAspect;
+		float xMax = -xMin;
+		m44Projection[0] = (2.0f * zMin) / (xMax - xMin);
+		m44Projection[5] = (2.0f * zMin) / (yMax - yMin);
+		m44Projection[8] = (xMax + xMin) / (xMax - xMin);
+		m44Projection[9] = (yMax + yMin) / (yMax - yMin);
+		m44Projection[10] = -((zMax + zMin) / (zMax - zMin));
+		m44Projection[11] = -1.0f;
+		m44Projection[14] = -((2.0f * (zMax * zMin)) / (zMax - zMin));
+		m44Projection[15] = 0.0f;
 	}
 
 
