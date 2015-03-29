@@ -822,34 +822,254 @@ public final class Math3D {
 	}
 
 
-	public static void m3dMakeOrthographicMatrix(float[] mProjection, float xMin, float xMax, float yMin,
+	public static void m3dMakeOrthographicMatrix(float[] m44Projection, float xMin, float xMax, float yMin,
 			float yMax, float zMin, float zMax)
 	{
-		// TODO
+		m3dLoadIdentity44(m44Projection);
+		m44Projection[0] = 2.0f / (xMax - xMin);
+		m44Projection[5] = 2.0f / (yMax - yMin);
+		m44Projection[10] = -2.0f / (zMax - zMin);
+		m44Projection[12] = -((xMax + xMin) / (xMax - xMin));
+		m44Projection[13] = -((yMax + yMin) / (yMax - yMin));
+		m44Projection[14] = -((zMax + zMin) / (zMax - zMin));
+		m44Projection[15] = 1.0f;
 	}
 
 
+	/**
+	 * Create a 3x3 rotation matrix. Takes radians NOT degrees.
+	 * 
+	 * @param mat33
+	 * @param angle
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public static void m3dRotationMatrix33(float[] mat33, float angle, float x, float y, float z)
 	{
-		// TODO
+
+		float mag, s, c;
+		float xx, yy, zz, xy, yz, zx, xs, ys, zs, one_c;
+
+		s = (float) Math.sin(angle);
+		c = (float) Math.cos(angle);
+
+		mag = (float) sqrt(x * x + y * y + z * z);
+
+		// Identity matrix
+		if (mag == 0.0f) {
+			m3dLoadIdentity33(mat33);
+			return;
+		}
+
+		// Rotation matrix is normalized
+		x /= mag;
+		y /= mag;
+		z /= mag;
+
+		xx = x * x;
+		yy = y * y;
+		zz = z * z;
+		xy = x * y;
+		yz = y * z;
+		zx = z * x;
+		xs = x * s;
+		ys = y * s;
+		zs = z * s;
+		one_c = 1.0f - c;
+
+		mat33[F(0, 0)] = (one_c * xx) + c;
+		mat33[F(0, 1)] = (one_c * xy) - zs;
+		mat33[F(0, 2)] = (one_c * zx) + ys;
+
+		mat33[F(1, 0)] = (one_c * xy) + zs;
+		mat33[F(1, 1)] = (one_c * yy) + c;
+		mat33[F(1, 2)] = (one_c * yz) - xs;
+
+		mat33[F(2, 0)] = (one_c * zx) - ys;
+		mat33[F(2, 1)] = (one_c * yz) + xs;
+		mat33[F(2, 2)] = (one_c * zz) + c;
 	}
 
 
+	/**
+	 * Create a 3x3 rotation matrix. Takes radians NOT degrees.
+	 * 
+	 * @param mat33
+	 * @param angle
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public static void m3dRotationMatrix33(double[] mat33, double angle, double x, double y, double z)
 	{
-		// TODO
+		double mag, s, c;
+		double xx, yy, zz, xy, yz, zx, xs, ys, zs, one_c;
+
+		s = Math.sin(angle);
+		c = Math.cos(angle);
+
+		mag = sqrt(x * x + y * y + z * z);
+
+		// Identity matrix
+		if (mag == 0.0f) {
+			m3dLoadIdentity33(mat33);
+			return;
+		}
+
+		// Rotation matrix is normalized
+		x /= mag;
+		y /= mag;
+		z /= mag;
+
+		xx = x * x;
+		yy = y * y;
+		zz = z * z;
+		xy = x * y;
+		yz = y * z;
+		zx = z * x;
+		xs = x * s;
+		ys = y * s;
+		zs = z * s;
+		one_c = 1.0f - c;
+
+		mat33[F(0, 0)] = (one_c * xx) + c;
+		mat33[F(0, 1)] = (one_c * xy) - zs;
+		mat33[F(0, 2)] = (one_c * zx) + ys;
+
+		mat33[F(1, 0)] = (one_c * xy) + zs;
+		mat33[F(1, 1)] = (one_c * yy) + c;
+		mat33[F(1, 2)] = (one_c * yz) - xs;
+
+		mat33[F(2, 0)] = (one_c * zx) - ys;
+		mat33[F(2, 1)] = (one_c * yz) + xs;
+		mat33[F(2, 2)] = (one_c * zz) + c;
 	}
 
 
+	/**
+	 * Create a 4x4 rotation matrix. Takes radians NOT degrees.
+	 * 
+	 * @param mat33
+	 * @param angle
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public static void m3dRotationMatrix44(float[] mat44, float angle, float x, float y, float z)
 	{
-		// TODO
+		float mag, s, c;
+		float xx, yy, zz, xy, yz, zx, xs, ys, zs, one_c;
+
+		s = (float) Math.sin(angle);
+		c = (float) Math.cos(angle);
+
+		mag = (float) Math.sqrt(x * x + y * y + z * z);
+
+		// Identity matrix
+		if (mag == 0.0f) {
+			m3dLoadIdentity44(mat44);
+			return;
+		}
+
+		// Rotation matrix is normalized
+		x /= mag;
+		y /= mag;
+		z /= mag;
+
+		xx = x * x;
+		yy = y * y;
+		zz = z * z;
+		xy = x * y;
+		yz = y * z;
+		zx = z * x;
+		xs = x * s;
+		ys = y * s;
+		zs = z * s;
+		one_c = 1.0f - c;
+
+		mat44[E(0, 0)] = (one_c * xx) + c;
+		mat44[E(0, 1)] = (one_c * xy) - zs;
+		mat44[E(0, 2)] = (one_c * zx) + ys;
+		mat44[E(0, 3)] = 0.0f;
+
+		mat44[E(1, 0)] = (one_c * xy) + zs;
+		mat44[E(1, 1)] = (one_c * yy) + c;
+		mat44[E(1, 2)] = (one_c * yz) - xs;
+		mat44[E(1, 3)] = 0.0f;
+
+		mat44[E(2, 0)] = (one_c * zx) - ys;
+		mat44[E(2, 1)] = (one_c * yz) + xs;
+		mat44[E(2, 2)] = (one_c * zz) + c;
+		mat44[E(2, 3)] = 0.0f;
+
+		mat44[E(3, 0)] = 0.0f;
+		mat44[E(3, 1)] = 0.0f;
+		mat44[E(3, 2)] = 0.0f;
+		mat44[E(3, 3)] = 1.0f;
 	}
 
 
+	/**
+	 * Create a 4x4 rotation matrix. Takes radians NOT degrees.
+	 * 
+	 * @param mat33
+	 * @param angle
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public static void m3dRotationMatrix44(double[] mat44, double angle, double x, double y, double z)
 	{
-		// TODO
+		double mag, s, c;
+		double xx, yy, zz, xy, yz, zx, xs, ys, zs, one_c;
+
+		s = Math.sin(angle);
+		c = Math.cos(angle);
+
+		mag = Math.sqrt(x * x + y * y + z * z);
+
+		// Identity matrix
+		if (mag == 0.0f) {
+			m3dLoadIdentity44(mat44);
+			return;
+		}
+
+		// Rotation matrix is normalized
+		x /= mag;
+		y /= mag;
+		z /= mag;
+
+		xx = x * x;
+		yy = y * y;
+		zz = z * z;
+		xy = x * y;
+		yz = y * z;
+		zx = z * x;
+		xs = x * s;
+		ys = y * s;
+		zs = z * s;
+		one_c = 1.0f - c;
+
+		mat44[E(0, 0)] = (one_c * xx) + c;
+		mat44[E(0, 1)] = (one_c * xy) - zs;
+		mat44[E(0, 2)] = (one_c * zx) + ys;
+		mat44[E(0, 3)] = 0.0f;
+
+		mat44[E(1, 0)] = (one_c * xy) + zs;
+		mat44[E(1, 1)] = (one_c * yy) + c;
+		mat44[E(1, 2)] = (one_c * yz) - xs;
+		mat44[E(1, 3)] = 0.0f;
+
+		mat44[E(2, 0)] = (one_c * zx) - ys;
+		mat44[E(2, 1)] = (one_c * yz) + xs;
+		mat44[E(2, 2)] = (one_c * zz) + c;
+		mat44[E(2, 3)] = 0.0f;
+
+		mat44[E(3, 0)] = 0.0f;
+		mat44[E(3, 1)] = 0.0f;
+		mat44[E(3, 2)] = 0.0f;
+		mat44[E(3, 3)] = 1.0f;
 	}
 
 
@@ -871,15 +1091,97 @@ public final class Math3D {
 	}
 
 
+	private static float DetIJ(float[] mat44, int i, int j)
+	{
+		int x, y, ii, jj;
+		float ret;
+		float[][] mat = new float[3][3];
+		x = 0;
+		for (ii = 0; ii < 4; ii++) {
+			if (ii == i) {
+				continue;
+			}
+			y = 0;
+			for (jj = 0; jj < 4; jj++) {
+				if (jj == j) {
+					continue;
+				}
+				mat[x][y] = mat44[(ii * 4) + jj];
+				y++;
+			}
+			x++;
+		}
+		ret = mat[0][0] * (mat[1][1] * mat[2][2] - mat[2][1] * mat[1][2]);
+		ret -= mat[0][1] * (mat[1][0] * mat[2][2] - mat[2][0] * mat[1][2]);
+		ret += mat[0][2] * (mat[1][0] * mat[2][1] - mat[2][0] * mat[1][1]);
+		return ret;
+	}
+
+
+	private static double DetIJ(double[] mat44, int i, int j)
+	{
+		int x, y, ii, jj;
+		double ret;
+		double[][] mat = new double[3][3];
+		x = 0;
+		for (ii = 0; ii < 4; ii++) {
+			if (ii == i) {
+				continue;
+			}
+			y = 0;
+			for (jj = 0; jj < 4; jj++) {
+				if (jj == j) {
+					continue;
+				}
+				mat[x][y] = mat44[(ii * 4) + jj];
+				y++;
+			}
+			x++;
+		}
+		ret = mat[0][0] * (mat[1][1] * mat[2][2] - mat[2][1] * mat[1][2]);
+		ret -= mat[0][1] * (mat[1][0] * mat[2][2] - mat[2][0] * mat[1][2]);
+		ret += mat[0][2] * (mat[1][0] * mat[2][1] - mat[2][0] * mat[1][1]);
+		return ret;
+	}
+
+
 	public static void m3dInvertMatrix44(float[] mInverse, float[] m)
 	{
-		// TODO
+		int i, j;
+		float det, detij;
+		// calculate 4x4 determinant
+		det = 0.0f;
+		for (i = 0; i < 4; i++) {
+			det += ((i & 0x1) == 1) ? (-m[i] * DetIJ(m, 0, i)) : (m[i] * DetIJ(m, 0, i));
+		}
+		det = 1.0f / det;
+		// calculate inverse
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				detij = DetIJ(m, j, i);
+				mInverse[(i * 4) + j] = (((i + j) & 0x1) == 1) ? (-detij * det) : (detij * det);
+			}
+		}
 	}
 
 
 	public static void m3dInvertMatrix44(double[] mInverse, double[] m)
 	{
-		// TODO
+		int i, j;
+		double det, detij;
+		// calculate 4x4 determinant
+		det = 0.0;
+		for (i = 0; i < 4; i++) {
+			det += ((i & 0x1) == 1) ? (-m[i] * DetIJ(m, 0, i)) : (m[i] * DetIJ(m, 0, i));
+		}
+		det = 1.0 / det;
+		// calculate inverse
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				detij = DetIJ(m, j, i);
+				mInverse[(i * 4) + j] = (((i + j) & 0x1) == 1) ? (-detij * det) : (detij * det);
+			}
+		}
 	}
 
 
