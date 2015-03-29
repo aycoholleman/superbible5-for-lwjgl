@@ -2,6 +2,10 @@ package superbible5.gltools;
 
 import static superbible5.gltools.C2J.*;
 
+/**
+ * @author Ayco Holleman
+ *
+ */
 public final class Math3D {
 
 	public static final double M3D_PI = Math.PI;
@@ -403,17 +407,27 @@ public final class Math3D {
 	}
 
 
-	public static double m3dGetDistanceSquared3(double[] u, double[] v)
+	public static float m3dGetDistanceSquared3(float[] vec3a, float[] vec3b)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		float x = vec3a[0] - vec3b[0];
+		x = x * x;
+		float y = vec3a[1] - vec3b[1];
+		y = y * y;
+		float z = vec3a[2] - vec3b[2];
+		z = z * z;
+		return (x + y + z);
 	}
 
 
-	public static float m3dGetDistanceSquared3(float[] u, float[] v)
+	public static double m3dGetDistanceSquared3(double[] vec3a, double[] vec3b)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		double x = vec3a[0] - vec3b[0];
+		x = x * x;
+		double y = vec3a[1] - vec3b[1];
+		y = y * y;
+		double z = vec3a[2] - vec3b[2];
+		z = z * z;
+		return (x + y + z);
 	}
 
 
@@ -529,6 +543,36 @@ public final class Math3D {
 	}
 
 
+	private static int E(int row, int col)
+	{
+		return (col << 2) + row;
+	}
+
+
+	public static void m3dMatrixMultiply44(float[] mat44Out, float[] a, float[] b)
+	{
+		for (int i = 0; i < 4; i++) {
+			float ai0 = a[E(i, 0)], ai1 = a[E(i, 1)], ai2 = a[E(i, 2)], ai3 = a[E(i, 3)];
+			mat44Out[E(i, 0)] = ai0 * b[E(0, 0)] + ai1 * b[E(1, 0)] + ai2 * b[E(2, 0)] + ai3 * b[E(3, 0)];
+			mat44Out[E(i, 1)] = ai0 * b[E(0, 1)] + ai1 * b[E(1, 1)] + ai2 * b[E(2, 1)] + ai3 * b[E(3, 1)];
+			mat44Out[E(i, 2)] = ai0 * b[E(0, 2)] + ai1 * b[E(1, 2)] + ai2 * b[E(2, 2)] + ai3 * b[E(3, 2)];
+			mat44Out[E(i, 3)] = ai0 * b[E(0, 3)] + ai1 * b[E(1, 3)] + ai2 * b[E(2, 3)] + ai3 * b[E(3, 3)];
+		}
+	}
+
+
+	public static void m3dMatrixMultiply44(double[] mat44Out, double[] a, double[] b)
+	{
+		for (int i = 0; i < 4; i++) {
+			double ai0 = a[E(i, 0)], ai1 = a[E(i, 1)], ai2 = a[E(i, 2)], ai3 = a[E(i, 3)];
+			mat44Out[E(i, 0)] = ai0 * b[E(0, 0)] + ai1 * b[E(1, 0)] + ai2 * b[E(2, 0)] + ai3 * b[E(3, 0)];
+			mat44Out[E(i, 1)] = ai0 * b[E(0, 1)] + ai1 * b[E(1, 1)] + ai2 * b[E(2, 1)] + ai3 * b[E(3, 1)];
+			mat44Out[E(i, 2)] = ai0 * b[E(0, 2)] + ai1 * b[E(1, 2)] + ai2 * b[E(2, 2)] + ai3 * b[E(3, 2)];
+			mat44Out[E(i, 3)] = ai0 * b[E(0, 3)] + ai1 * b[E(1, 3)] + ai2 * b[E(2, 3)] + ai3 * b[E(3, 3)];
+		}
+	}
+
+
 	public static void m3dExtractRotationMatrix33(float[] mat33, float[] mat44)
 	{
 		memcpy3(mat33, mat44); // X column
@@ -577,29 +621,21 @@ public final class Math3D {
 	}
 
 
-	public static void m3dTransformVector4(float[] vec4Out, float[] vec4In, float[] mat44)
+	public static void m3dTransformVector4(float[] v4Out, float[] v4In, float[] m44)
 	{
-		vec4Out[0] = mat44[0] * vec4In[0] + mat44[4] * vec4In[1] + mat44[8] * vec4In[2] + mat44[12]
-				* vec4In[3];
-		vec4Out[1] = mat44[1] * vec4In[0] + mat44[5] * vec4In[1] + mat44[9] * vec4In[2] + mat44[13]
-				* vec4In[3];
-		vec4Out[2] = mat44[2] * vec4In[0] + mat44[6] * vec4In[1] + mat44[10] * vec4In[2] + mat44[14]
-				* vec4In[3];
-		vec4Out[3] = mat44[3] * vec4In[0] + mat44[7] * vec4In[1] + mat44[11] * vec4In[2] + mat44[15]
-				* vec4In[3];
+		v4Out[0] = m44[0] * v4In[0] + m44[4] * v4In[1] + m44[8] * v4In[2] + m44[12] * v4In[3];
+		v4Out[1] = m44[1] * v4In[0] + m44[5] * v4In[1] + m44[9] * v4In[2] + m44[13] * v4In[3];
+		v4Out[2] = m44[2] * v4In[0] + m44[6] * v4In[1] + m44[10] * v4In[2] + m44[14] * v4In[3];
+		v4Out[3] = m44[3] * v4In[0] + m44[7] * v4In[1] + m44[11] * v4In[2] + m44[15] * v4In[3];
 	}
 
 
-	public static void m3dTransformVector4(double[] vec4Out, double[] vec4In, double[] mat44)
+	public static void m3dTransformVector4(double[] v4Out, double[] v4In, double[] m44)
 	{
-		vec4Out[0] = mat44[0] * vec4In[0] + mat44[4] * vec4In[1] + mat44[8] * vec4In[2] + mat44[12]
-				* vec4In[3];
-		vec4Out[1] = mat44[1] * vec4In[0] + mat44[5] * vec4In[1] + mat44[9] * vec4In[2] + mat44[13]
-				* vec4In[3];
-		vec4Out[2] = mat44[2] * vec4In[0] + mat44[6] * vec4In[1] + mat44[10] * vec4In[2] + mat44[14]
-				* vec4In[3];
-		vec4Out[3] = mat44[3] * vec4In[0] + mat44[7] * vec4In[1] + mat44[11] * vec4In[2] + mat44[15]
-				* vec4In[3];
+		v4Out[0] = m44[0] * v4In[0] + m44[4] * v4In[1] + m44[8] * v4In[2] + m44[12] * v4In[3];
+		v4Out[1] = m44[1] * v4In[0] + m44[5] * v4In[1] + m44[9] * v4In[2] + m44[13] * v4In[3];
+		v4Out[2] = m44[2] * v4In[0] + m44[6] * v4In[1] + m44[10] * v4In[2] + m44[14] * v4In[3];
+		v4Out[3] = m44[3] * v4In[0] + m44[7] * v4In[1] + m44[11] * v4In[2] + m44[15] * v4In[3];
 	}
 
 
@@ -707,27 +743,33 @@ public final class Math3D {
 	}
 
 
-	public static void m3dLoadIdentity33(float[] m)
+	public static void m3dLoadIdentity33(float[] mat33)
 	{
-		// TODO Auto-generated method stub
+		float[] identity = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+		memcpy9(mat33, identity);
 	}
 
 
-	public static void m3dLoadIdentity33(double[] m)
+	public static void m3dLoadIdentity33(double[] mat33)
 	{
-		// TODO Auto-generated method stub
+		double[] identity = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
+		memcpy9(mat33, identity);
 	}
 
 
-	public static void m3dLoadIdentity44(float[] m)
+	public static void m3dLoadIdentity44(float[] mat44)
 	{
-		// TODO Auto-generated method stub
+		float[] identity = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+		memcpy16(mat44, identity);
 	}
 
 
-	public static void m3dLoadIdentity44(double[] m)
+	public static void m3dLoadIdentity44(double[] mat44)
 	{
-		// TODO Auto-generated method stub
+		double[] identity = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+				0.0, 0.0, 1.0 };
+		memcpy16(mat44, identity);
 	}
 
 
@@ -796,6 +838,200 @@ public final class Math3D {
 	public static void m3dInvertMatrix44(double[] mInverse, double[] m)
 	{
 		// TODO
+	}
+
+
+	/**
+	 * Find a normal from three points.
+	 * 
+	 * @param result
+	 * @param point1
+	 * @param point2
+	 * @param point3
+	 */
+	void m3dFindNormal(float[] vec3Result, float[] vec3a, float[] vec3b, float[] vec3c)
+	{
+		// TODO
+	}
+
+
+	void m3dFindNormal(double[] vec3Result, double[] vec3a, double[] vec3b, double[] vec3c)
+	{
+		// TODO
+	}
+
+
+	/**
+	 * Calculate the signed distance of a point to a plane
+	 * 
+	 * @param v3Point
+	 * @param v4Plane
+	 * @return
+	 */
+	public static float m3dGetDistanceToPlane(float[] v3Point, float[] v4Plane)
+	{
+		return v3Point[0] * v4Plane[0] + v3Point[1] * v4Plane[1] + v3Point[2] * v4Plane[2] + v4Plane[3];
+	}
+
+
+	public static double m3dGetDistanceToPlane(double[] v3Point, double[] v4Plane)
+	{
+		return v3Point[0] * v4Plane[0] + v3Point[1] * v4Plane[1] + v3Point[2] * v4Plane[2] + v4Plane[3];
+	}
+
+
+	/**
+	 * Get plane equation from three points
+	 * 
+	 * @param planeEq
+	 * @param p1
+	 * @param p2
+	 * @param p3
+	 */
+	public static void m3dGetPlaneEquation(float[] planeEq, float[] p1, float[] p2, float[] p3)
+	{
+		// TODO
+	}
+
+
+	public static void m3dGetPlaneEquation(double[] planeEq, double[] p1, double[] p2, double[] p3)
+	{
+		// TODO
+	}
+
+
+	/**
+	 * Determine if a ray intersects a sphere. Return value is < 0 if the ray
+	 * does not intersect. Return value is 0.0 if ray is tangent Positive value
+	 * is distance to the intersection point.
+	 */
+	public static double m3dRaySphereTest(double[] point, double[] ray, double[] sphereCenter,
+			double sphereRadius)
+	{
+		// TODO
+		return 0;
+	}
+
+
+	public static float m3dRaySphereTest(float[] point, float[] ray, float[] sphereCenter, float sphereRadius)
+	{
+		// TODO
+		return 0;
+	}
+
+
+	public static void m3dProjectXY(float[] vPointOut, float[] mModelView, float[] mProjection,
+			int[] iViewPort, float[] vPointIn)
+	{
+		// TODO
+	}
+
+
+	public static void m3dProjectXYZ(float[] vPointOut, float[] mModelView, float[] mProjection,
+			int[] iViewPort, float[] vPointIn)
+	{
+		// TODO
+	}
+
+
+	/**
+	 * Do a three dimensional Catmull-Rom "spline" interpolation between p1 and
+	 * p2
+	 * 
+	 * @param vOut
+	 * @param vP0
+	 * @param vP1
+	 * @param vP2
+	 * @param vP3
+	 * @param t
+	 */
+	public static void m3dCatmullRom(float[] vOut, float[] vP0, float[] vP1, float[] vP2, float[] vP3, float t)
+	{
+		// TODO
+	}
+
+
+	public static void m3dCatmullRom(double[] vOut, double[] vP0, double[] vP1, double[] vP2, double[] vP3,
+			double t)
+	{
+		// TODO
+	}
+
+
+	public static boolean m3dCloseEnough(float fCandidate, float fCompare, float fEpsilon)
+	{
+		return (Math.abs(fCandidate - fCompare) < fEpsilon);
+	}
+
+
+	public static boolean m3dCloseEnough(double dCandidate, double dCompare, double dEpsilon)
+	{
+		return (Math.abs(dCandidate - dCompare) < dEpsilon);
+	}
+
+
+	void m3dCalculateTangentBasis(float[] vTangent, float[][] pvTriangle, float[][] pvTexCoords, float[] N)
+	{
+		// TODO
+	}
+
+
+	/**
+	 * Smoothly step between 0 and 1 between edge1 and edge 2
+	 * 
+	 * @param edge1
+	 * @param edge2
+	 * @param x
+	 * @return
+	 */
+	public static double m3dSmoothStep(double edge1, double edge2, double x)
+	{
+		// TODO
+		return 0;
+	}
+
+
+	public static float m3dSmoothStep(float edge1, float edge2, float x)
+	{
+		// TODO
+		return 0;
+	}
+
+
+	public static void m3dMakePlanarShadowMatrix(double[] proj, double[] planeEq, double[] vLightPos)
+	{
+		// TODO
+	}
+
+
+	public static void m3dMakePlanarShadowMatrix(float[] proj, float[] planeEq, float[] vLightPos)
+	{
+		// TODO
+	}
+
+
+	/**
+	 * Closest point on a ray to another point in space
+	 * 
+	 * @param vPointOnRay
+	 * @param vRayOrigin
+	 * @param vUnitRayDir
+	 * @param vPointInSpace
+	 * @return
+	 */
+	public static double m3dClosestPointOnRay(double[] vPointOnRay, double[] vRayOrigin,
+			double[] vUnitRayDir, double[] vPointInSpace)
+	{
+		// TODO
+		return 0;
+	}
+
+
+	public static float m3dClosestPointOnRay(float[] vPointOnRay, float[] vRayOrigin, float[] vUnitRayDir,
+			float[] vPointInSpace)
+	{
+		// TODO
+		return 0;
 	}
 
 }
