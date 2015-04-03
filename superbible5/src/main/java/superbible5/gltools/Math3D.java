@@ -13,6 +13,29 @@ public final class Math3D {
 	public static final double M3D_PI_DIV_180 = M3D_PI / 180D;
 	public static final double M3D_INV_PI_DIV_180 = 180D / M3D_PI;
 
+	/**
+	 * 3x3 identify matrix (float)
+	 */
+	public static final float[] IDENTITY_MAT33F = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 1.0f };
+
+	/**
+	 * 3x3 identify matrix (double)
+	 */
+	public static final double[] IDENTITY_MAT33D = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
+
+	/**
+	 * 4x4 identify matrix (float)
+	 */
+	public static final float[] IDENTITY_MAT44F = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+
+	/**
+	 * 4x4 identify matrix (double)
+	 */
+	public static final double[] IDENTITY_MAT44D = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
+
 
 	private Math3D()
 	{
@@ -101,51 +124,51 @@ public final class Math3D {
 	}
 
 
-	public static void m3dLoadVector2(float[] v, float x, float y)
+	public static void m3dLoadVector2(float[] vec2, float x, float y)
 	{
-		v[0] = x;
-		v[1] = y;
+		vec2[0] = x;
+		vec2[1] = y;
 	}
 
 
-	public static void m3dLoadVector3(float[] v, float x, float y, float z)
+	public static void m3dLoadVector2(double[] vec2, double x, double y)
 	{
-		v[0] = x;
-		v[1] = y;
-		v[2] = z;
+		vec2[0] = x;
+		vec2[1] = y;
 	}
 
 
-	public static void m3dLoadVector4(float[] v, float x, float y, float z, float w)
+	public static void m3dLoadVector3(float[] vec3, float x, float y, float z)
 	{
-		v[0] = x;
-		v[1] = y;
-		v[2] = z;
-		v[3] = w;
+		vec3[0] = x;
+		vec3[1] = y;
+		vec3[2] = z;
 	}
 
 
-	public static void m3dLoadVector2(double[] v, double x, double y)
+	public static void m3dLoadVector3(double[] vec3, double x, double y, double z)
 	{
-		v[0] = x;
-		v[1] = y;
+		vec3[0] = x;
+		vec3[1] = y;
+		vec3[2] = z;
 	}
 
 
-	public static void m3dLoadVector3(double[] v, double x, double y, double z)
+	public static void m3dLoadVector4(float[] vec4, float x, float y, float z, float w)
 	{
-		v[0] = x;
-		v[1] = y;
-		v[2] = z;
+		vec4[0] = x;
+		vec4[1] = y;
+		vec4[2] = z;
+		vec4[3] = w;
 	}
 
 
-	public static void m3dLoadVector4(double[] v, double x, double y, double z, double w)
+	public static void m3dLoadVector4(double[] vec4, double x, double y, double z, double w)
 	{
-		v[0] = x;
-		v[1] = y;
-		v[2] = z;
-		v[3] = w;
+		vec4[0] = x;
+		vec4[1] = y;
+		vec4[2] = z;
+		vec4[3] = w;
 	}
 
 
@@ -431,15 +454,15 @@ public final class Math3D {
 	}
 
 
-	public static double m3dGetDistance3(double[] u, double[] v)
-	{
-		return sqrt(m3dGetDistanceSquared3(u, v));
-	}
-
-
 	public static float m3dGetDistance3(float[] u, float[] v)
 	{
 		return sqrtf(m3dGetDistanceSquared3(u, v));
+	}
+
+
+	public static double m3dGetDistance3(double[] u, double[] v)
+	{
+		return sqrt(m3dGetDistanceSquared3(u, v));
 	}
 
 
@@ -669,27 +692,11 @@ public final class Math3D {
 	}
 
 
-	public static double[] m3dTransformVector4(double[] vec4In, double[] mat44)
-	{
-		double[] vec4Out = new double[4];
-		m3dTransformVector4(vec4Out, vec4In, mat44);
-		return vec4Out;
-	}
-
-
 	public static void m3dRotateVector(float[] vec3Out, float[] vec3In, float[] mat33)
 	{
 		vec3Out[0] = mat33[0] * vec3In[0] + mat33[3] * vec3In[1] + mat33[6] * vec3In[2];
 		vec3Out[1] = mat33[1] * vec3In[0] + mat33[4] * vec3In[1] + mat33[7] * vec3In[2];
 		vec3Out[2] = mat33[2] * vec3In[0] + mat33[5] * vec3In[1] + mat33[8] * vec3In[2];
-	}
-
-
-	public static float[] m3dRotateVector(float[] vec3In, float[] mat33)
-	{
-		float[] vec3Out = new float[3];
-		m3dRotateVector(vec3Out, vec3In, mat33);
-		return vec3Out;
 	}
 
 
@@ -775,31 +782,26 @@ public final class Math3D {
 
 	public static void m3dLoadIdentity33(float[] mat33)
 	{
-		float[] identity = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f };
-		memcpy9(mat33, identity);
+		memcpy9(mat33, IDENTITY_MAT33F);
 	}
 
 
 	public static void m3dLoadIdentity33(double[] mat33)
 	{
-		double[] identity = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
-		memcpy9(mat33, identity);
+		memcpy9(mat33, IDENTITY_MAT33D);
 	}
 
 
 	public static void m3dLoadIdentity44(float[] mat44)
 	{
-		float[] identity = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-				0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
-		memcpy16(mat44, identity);
+
+		memcpy16(mat44, IDENTITY_MAT44F);
 	}
 
 
 	public static void m3dLoadIdentity44(double[] mat44)
 	{
-		double[] identity = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
-				0.0, 0.0, 1.0 };
-		memcpy16(mat44, identity);
+		memcpy16(mat44, IDENTITY_MAT44D);
 	}
 
 
@@ -1749,40 +1751,144 @@ public final class Math3D {
 	}
 
 
-	public static void m3dMakePlanarShadowMatrix(float[] proj, float[] planeEq, float[] vLightPos)
+	/**
+	 * Create a projection to "squish" an object into the plane. Use
+	 * m3dGetPlaneEquationf(planeEq, point1, point2, point3) to get a plane
+	 * equation.
+	 * 
+	 * @param mat44Proj
+	 * @param vec4PlaneEq
+	 * @param vec3LightPos
+	 */
+	public static void m3dMakePlanarShadowMatrix(float[] mat44Proj, float[] vec4PlaneEq, float[] vec3LightPos)
 	{
-		// TODO
-	}
+		float a = vec4PlaneEq[0];
+		float b = vec4PlaneEq[1];
+		float c = vec4PlaneEq[2];
+		float d = vec4PlaneEq[3];
 
+		float dx = -vec3LightPos[0];
+		float dy = -vec3LightPos[1];
+		float dz = -vec3LightPos[2];
 
-	public static void m3dMakePlanarShadowMatrix(double[] proj, double[] planeEq, double[] vLightPos)
-	{
-		// TODO
+		mat44Proj[0] = b * dy + c * dz;
+		mat44Proj[1] = -a * dy;
+		mat44Proj[2] = -a * dz;
+		mat44Proj[3] = 0.0f;
+
+		mat44Proj[4] = -b * dx;
+		mat44Proj[5] = a * dx + c * dz;
+		mat44Proj[6] = -b * dz;
+		mat44Proj[7] = 0.0f;
+
+		mat44Proj[8] = -c * dx;
+		mat44Proj[9] = -c * dy;
+		mat44Proj[10] = a * dx + b * dy;
+		mat44Proj[11] = 0.0f;
+
+		mat44Proj[12] = -d * dx;
+		mat44Proj[13] = -d * dy;
+		mat44Proj[14] = -d * dz;
+		mat44Proj[15] = a * dx + b * dy + c * dz;
 	}
 
 
 	/**
-	 * Closest point on a ray to another point in space
+	 * Create a projection to "squish" an object into the plane. Use
+	 * m3dGetPlaneEquationf(planeEq, point1, point2, point3) to get a plane
+	 * equation.
 	 * 
-	 * @param vPointOnRay
-	 * @param vRayOrigin
-	 * @param vUnitRayDir
-	 * @param vPointInSpace
-	 * @return
+	 * @param mat44Proj
+	 * @param vec4PlaneEq
+	 * @param vec3LightPos
 	 */
-	public static double m3dClosestPointOnRay(double[] vPointOnRay, double[] vRayOrigin,
-			double[] vUnitRayDir, double[] vPointInSpace)
+	public static void m3dMakePlanarShadowMatrix(double[] mat44Proj, double[] vec4PlaneEq,
+			double[] vec3LightPos)
 	{
-		// TODO
-		return 0;
+		double a = vec4PlaneEq[0];
+		double b = vec4PlaneEq[1];
+		double c = vec4PlaneEq[2];
+		double d = vec4PlaneEq[3];
+
+		double dx = -vec3LightPos[0];
+		double dy = -vec3LightPos[1];
+		double dz = -vec3LightPos[2];
+
+		mat44Proj[0] = b * dy + c * dz;
+		mat44Proj[1] = -a * dy;
+		mat44Proj[2] = -a * dz;
+		mat44Proj[3] = 0.0;
+
+		mat44Proj[4] = -b * dx;
+		mat44Proj[5] = a * dx + c * dz;
+		mat44Proj[6] = -b * dz;
+		mat44Proj[7] = 0.0;
+
+		mat44Proj[8] = -c * dx;
+		mat44Proj[9] = -c * dy;
+		mat44Proj[10] = a * dx + b * dy;
+		mat44Proj[11] = 0.0;
+
+		mat44Proj[12] = -d * dx;
+		mat44Proj[13] = -d * dy;
+		mat44Proj[14] = -d * dz;
+		mat44Proj[15] = a * dx + b * dy + c * dz;
 	}
 
 
-	public static float m3dClosestPointOnRay(float[] vPointOnRay, float[] vRayOrigin, float[] vUnitRayDir,
-			float[] vPointInSpace)
+	/**
+	 * Closest point on a ray to another given point in space. As a bonus,
+	 * return the distance squared of the two points.
+	 * 
+	 * @param vPointOnRay
+	 *            Out: vPointOnRay is the poing on the ray closest to
+	 *            vPointInSpace
+	 * @param vRayOrigin
+	 *            In: vRayOrigin is the origin of the ray
+	 * @param vUnitRayDir
+	 *            In: vUnitRayDir is the unit vector of the ray
+	 * @param vPointInSpace
+	 *            In: vPointInSpace is the point in space
+	 * @return The distance squared of the two points
+	 */
+	public static float m3dClosestPointOnRay(float[] v3PointOnRay, float[] v3RayOrigin, float[] v3UnitRayDir,
+			float[] v3PointInSpace)
 	{
-		// TODO
-		return 0;
+		float[] vec3 = new float[3];
+		m3dSubtractVectors3(vec3, v3PointInSpace, v3RayOrigin);
+		float t = m3dDotProduct3(v3UnitRayDir, vec3);
+		v3PointOnRay[0] = v3RayOrigin[0] + (t * v3UnitRayDir[0]);
+		v3PointOnRay[1] = v3RayOrigin[1] + (t * v3UnitRayDir[1]);
+		v3PointOnRay[2] = v3RayOrigin[2] + (t * v3UnitRayDir[2]);
+		return m3dGetDistanceSquared3(v3PointOnRay, v3PointInSpace);
+	}
+
+
+	/**
+	 * Closest point on a ray to another given point in space. As a bonus,
+	 * return the distance squared of the two points.
+	 * 
+	 * @param vPointOnRay
+	 *            Out: vPointOnRay is the poing on the ray closest to
+	 *            vPointInSpace
+	 * @param vRayOrigin
+	 *            In: vRayOrigin is the origin of the ray
+	 * @param vUnitRayDir
+	 *            In: vUnitRayDir is the unit vector of the ray
+	 * @param vPointInSpace
+	 *            In: vPointInSpace is the point in space
+	 * @return The distance squared of the two points
+	 */
+	public static double m3dClosestPointOnRay(double[] v3PointOnRay, double[] v3RayOrigin,
+			double[] v3UnitRayDir, double[] v3PointInSpace)
+	{
+		double[] vec3 = new double[3];
+		m3dSubtractVectors3(vec3, v3PointInSpace, v3RayOrigin);
+		double t = m3dDotProduct3(v3UnitRayDir, vec3);
+		v3PointOnRay[0] = v3RayOrigin[0] + (t * v3UnitRayDir[0]);
+		v3PointOnRay[1] = v3RayOrigin[1] + (t * v3UnitRayDir[1]);
+		v3PointOnRay[2] = v3RayOrigin[2] + (t * v3UnitRayDir[2]);
+		return m3dGetDistanceSquared3(v3PointOnRay, v3PointInSpace);
 	}
 
 }
