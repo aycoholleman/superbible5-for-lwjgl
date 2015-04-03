@@ -1188,20 +1188,46 @@ public final class Math3D {
 	/**
 	 * Find a normal from three points.
 	 * 
-	 * @param result
-	 * @param point1
-	 * @param point2
-	 * @param point3
+	 * @param vec3Out
+	 * @param vec3a
+	 * @param vec3b
+	 * @param vec3c
 	 */
-	void m3dFindNormal(float[] vec3Result, float[] vec3a, float[] vec3b, float[] vec3c)
+	public static void m3dFindNormal(float[] vec3Out, float[] vec3a, float[] vec3b, float[] vec3c)
 	{
-		// TODO
+		float[] vec3Tmp0 = new float[3];
+		float[] vec3Tmp1 = new float[3];
+
+		// Calculate two vectors from the three points. Assumes counter clockwise
+		// winding!
+		vec3Tmp0[0] = vec3a[0] - vec3b[0];
+		vec3Tmp0[1] = vec3a[1] - vec3b[1];
+		vec3Tmp0[2] = vec3a[2] - vec3b[2];
+
+		vec3Tmp1[0] = vec3b[0] - vec3c[0];
+		vec3Tmp1[1] = vec3b[1] - vec3c[1];
+		vec3Tmp1[2] = vec3b[2] - vec3c[2];
+
+		// Take the cross product of the two vectors to get
+		// the normal vector.
+		m3dCrossProduct3(vec3Out, vec3Tmp0, vec3Tmp1);
 	}
 
 
-	void m3dFindNormal(double[] vec3Result, double[] vec3a, double[] vec3b, double[] vec3c)
+	public static void m3dFindNormal(double[] vec3Out, double[] vec3a, double[] vec3b, double[] vec3c)
 	{
-		// TODO
+		double[] vec3Tmp0 = new double[3];
+		double[] vec3Tmp1 = new double[3];
+
+		vec3Tmp0[0] = vec3a[0] - vec3b[0];
+		vec3Tmp0[1] = vec3a[1] - vec3b[1];
+		vec3Tmp0[2] = vec3a[2] - vec3b[2];
+
+		vec3Tmp1[0] = vec3b[0] - vec3c[0];
+		vec3Tmp1[1] = vec3b[1] - vec3c[1];
+		vec3Tmp1[2] = vec3b[2] - vec3c[2];
+
+		m3dCrossProduct3(vec3Out, vec3Tmp0, vec3Tmp1);
 	}
 
 
@@ -1228,19 +1254,50 @@ public final class Math3D {
 	 * Get plane equation from three points
 	 * 
 	 * @param planeEq
-	 * @param p1
-	 * @param p2
-	 * @param p3
+	 * @param vec3a
+	 * @param vec3b
+	 * @param vec3c
 	 */
-	public static void m3dGetPlaneEquation(float[] planeEq, float[] p1, float[] p2, float[] p3)
+	public static void m3dGetPlaneEquation(float[] planeEq, float[] vec3a, float[] vec3b, float[] vec3c)
 	{
-		// TODO
+		float[] v1 = new float[3];
+		float[] v2 = new float[3];
+
+		// V1 = p3 - p1
+		v1[0] = vec3c[0] - vec3a[0];
+		v1[1] = vec3c[1] - vec3a[1];
+		v1[2] = vec3c[2] - vec3a[2];
+
+		// V2 = P2 - p1
+		v2[0] = vec3b[0] - vec3a[0];
+		v2[1] = vec3b[1] - vec3a[1];
+		v2[2] = vec3b[2] - vec3a[2];
+
+		// Unit normal to plane - Not sure which is the best way here
+		m3dCrossProduct3(planeEq, v1, v2);
+		m3dNormalizeVector3(planeEq);
+		// Back substitute to get D
+		planeEq[3] = -(planeEq[0] * vec3c[0] + planeEq[1] * vec3c[1] + planeEq[2] * vec3c[2]);
 	}
 
 
-	public static void m3dGetPlaneEquation(double[] planeEq, double[] p1, double[] p2, double[] p3)
+	public static void m3dGetPlaneEquation(double[] planeEq, double[] vec3a, double[] vec3b, double[] vec3c)
 	{
-		// TODO
+		double[] v1 = new double[3];
+		double[] v2 = new double[3];
+
+		v1[0] = vec3c[0] - vec3a[0];
+		v1[1] = vec3c[1] - vec3a[1];
+		v1[2] = vec3c[2] - vec3a[2];
+
+		v2[0] = vec3b[0] - vec3a[0];
+		v2[1] = vec3b[1] - vec3a[1];
+		v2[2] = vec3b[2] - vec3a[2];
+
+		m3dCrossProduct3(planeEq, v1, v2);
+		m3dNormalizeVector3(planeEq);
+
+		planeEq[3] = -(planeEq[0] * vec3c[0] + planeEq[1] * vec3c[1] + planeEq[2] * vec3c[2]);
 	}
 
 
@@ -1249,56 +1306,306 @@ public final class Math3D {
 	 * does not intersect. Return value is 0.0 if ray is tangent Positive value
 	 * is distance to the intersection point.
 	 */
-	public static double m3dRaySphereTest(double[] point, double[] ray, double[] sphereCenter,
-			double sphereRadius)
+	public static float m3dRaySphereTest(float[] v3Point, float[] v3Ray, float[] v3SphereCenter,
+			float sphereRadius)
 	{
-		// TODO
-		return 0;
-	}
+		//m3dNormalizeVector(ray);	// Make sure ray is unit length
 
+		float[] rayToCenter = new float[3]; // Ray to center of sphere
+		rayToCenter[0] = v3SphereCenter[0] - v3Point[0];
+		rayToCenter[1] = v3SphereCenter[1] - v3Point[1];
+		rayToCenter[2] = v3SphereCenter[2] - v3Point[2];
 
-	public static float m3dRaySphereTest(float[] point, float[] ray, float[] sphereCenter, float sphereRadius)
-	{
-		// TODO
-		return 0;
-	}
+		// Project rayToCenter on ray to test
+		float a = m3dDotProduct3(rayToCenter, v3Ray);
 
+		// Distance to center of sphere
+		float distance2 = m3dDotProduct3(rayToCenter, rayToCenter); // Or length
 
-	public static void m3dProjectXY(float[] vPointOut, float[] mModelView, float[] mProjection,
-			int[] iViewPort, float[] vPointIn)
-	{
-		// TODO
-	}
+		float dRet = (sphereRadius * sphereRadius) - distance2 + (a * a);
 
+		if (dRet > 0.0) {
+			// Return distance to intersection
+			dRet = (float) (a - sqrt(dRet));
+		}
 
-	public static void m3dProjectXYZ(float[] vPointOut, float[] mModelView, float[] mProjection,
-			int[] iViewPort, float[] vPointIn)
-	{
-		// TODO
+		return dRet;
 	}
 
 
 	/**
-	 * Do a three dimensional Catmull-Rom "spline" interpolation between p1 and
-	 * p2
-	 * 
-	 * @param vOut
-	 * @param vP0
-	 * @param vP1
-	 * @param vP2
-	 * @param vP3
-	 * @param t
+	 * Determine if a ray intersects a sphere. Return value is < 0 if the ray
+	 * does not intersect. Return value is 0.0 if ray is tangent Positive value
+	 * is distance to the intersection point.
 	 */
-	public static void m3dCatmullRom(float[] vOut, float[] vP0, float[] vP1, float[] vP2, float[] vP3, float t)
+	public static double m3dRaySphereTest(double[] v3Point, double[] v3Ray, double[] v3SphereCenter,
+			double sphereRadius)
 	{
-		// TODO
+		//m3dNormalizeVector(ray);	// Make sure ray is unit length
+
+		double[] rayToCenter = new double[3]; // Ray to center of sphere
+		rayToCenter[0] = v3SphereCenter[0] - v3Point[0];
+		rayToCenter[1] = v3SphereCenter[1] - v3Point[1];
+		rayToCenter[2] = v3SphereCenter[2] - v3Point[2];
+
+		// Project rayToCenter on ray to test
+		double a = m3dDotProduct3(rayToCenter, v3Ray);
+
+		// Distance to center of sphere
+		double distance2 = m3dDotProduct3(rayToCenter, rayToCenter); // Or length
+
+		double dRet = (sphereRadius * sphereRadius) - distance2 + (a * a);
+
+		if (dRet > 0.0) {
+			// Return distance to intersection
+			dRet = a - sqrt(dRet);
+		}
+
+		return dRet;
 	}
 
 
-	public static void m3dCatmullRom(double[] vOut, double[] vP0, double[] vP1, double[] vP2, double[] vP3,
-			double t)
+	/**
+	 * Get Window coordinates, discard Z...
+	 * 
+	 * @param vec2Out
+	 * @param m44ModelView
+	 * @param m44Projection
+	 * @param iViewPort
+	 * @param vec3In
+	 */
+	public static void m3dProjectXY(float[] vec2Out, float[] m44ModelView, float[] m44Projection,
+			int[] iViewPort, float[] vec3In)
 	{
-		// TODO
+		float[] v4Back = new float[4];
+		float[] v4Forth = new float[4];
+
+		memcpy3(v4Back, vec3In);
+		v4Back[3] = 1.0f;
+
+		m3dTransformVector4(v4Forth, v4Back, m44ModelView);
+		m3dTransformVector4(v4Back, v4Forth, m44Projection);
+
+		if (!m3dCloseEnough(v4Back[3], 0.0f, 0.000001f)) {
+			float div = 1.0f / v4Back[3];
+			v4Back[0] *= div;
+			v4Back[1] *= div;
+		}
+
+		vec2Out[0] = iViewPort[0] + (1.0f + v4Back[0]) * iViewPort[2] / 2.0f;
+		vec2Out[1] = iViewPort[1] + (1.0f + v4Back[1]) * iViewPort[3] / 2.0f;
+
+		if (iViewPort[0] != 0) {
+			vec2Out[0] -= iViewPort[0];
+		}
+
+		if (iViewPort[1] != 0) {
+			vec2Out[1] -= iViewPort[1];
+		}
+	}
+
+
+	/**
+	 * Get Window coordinates, discard Z.
+	 * 
+	 * @param vec2Out
+	 * @param m44ModelView
+	 * @param m44Projection
+	 * @param iViewPort
+	 * @param vec3In
+	 */
+	public static void m3dProjectXY(double[] vec2Out, double[] m44ModelView, double[] m44Projection,
+			int[] iViewPort, double[] vec3In)
+	{
+		double[] v4Back = new double[4];
+		double[] v4Forth = new double[4];
+
+		memcpy3(v4Back, vec3In);
+		v4Back[3] = 1.0;
+
+		m3dTransformVector4(v4Forth, v4Back, m44ModelView);
+		m3dTransformVector4(v4Back, v4Forth, m44Projection);
+
+		if (!m3dCloseEnough(v4Back[3], 0.0f, 0.000001f)) {
+			double div = 1.0 / v4Back[3];
+			v4Back[0] *= div;
+			v4Back[1] *= div;
+		}
+
+		vec2Out[0] = iViewPort[0] + (1.0 + v4Back[0]) * iViewPort[2] / 2.0;
+		vec2Out[1] = iViewPort[1] + (1.0 + v4Back[1]) * iViewPort[3] / 2.0;
+
+		if (iViewPort[0] != 0) {
+			vec2Out[0] -= iViewPort[0];
+		}
+
+		if (iViewPort[1] != 0) {
+			vec2Out[1] -= iViewPort[1];
+		}
+	}
+
+
+	/**
+	 * Get window coordinates, we also want Z.
+	 * 
+	 * @param v2PointOut
+	 * @param m44ModelView
+	 * @param m44Projection
+	 * @param iViewPort
+	 * @param v2PointIn
+	 */
+	public static void m3dProjectXYZ(float[] v2PointOut, float[] m44ModelView, float[] m44Projection,
+			int[] iViewPort, float[] v2PointIn)
+	{
+		float[] vBack = new float[4];
+		float[] vForth = new float[4];
+
+		memcpy3(vBack, v2PointIn);
+		vBack[3] = 1.0f;
+
+		m3dTransformVector4(vForth, vBack, m44ModelView);
+		m3dTransformVector4(vBack, vForth, m44Projection);
+
+		if (!m3dCloseEnough(vBack[3], 0.0f, 0.000001f)) {
+			float div = 1.0f / vBack[3];
+			vBack[0] *= div;
+			vBack[1] *= div;
+			vBack[2] *= div;
+		}
+
+		v2PointOut[0] = iViewPort[0] + (1.0f + vBack[0]) * iViewPort[2] / 2.0f;
+		v2PointOut[1] = iViewPort[1] + (1.0f + vBack[1]) * iViewPort[3] / 2.0f;
+
+		if (iViewPort[0] != 0)
+			v2PointOut[0] -= iViewPort[0];
+
+		if (iViewPort[1] != 0)
+			v2PointOut[1] -= iViewPort[1];
+
+		v2PointOut[2] = vBack[2];
+	}
+
+
+	/**
+	 * Get window coordinates, we also want Z.
+	 * 
+	 * @param v2PointOut
+	 * @param m44ModelView
+	 * @param m44Projection
+	 * @param iViewPort
+	 * @param v2PointIn
+	 */
+	public static void m3dProjectXYZ(double[] v2PointOut, double[] m44ModelView, double[] m44Projection,
+			int[] iViewPort, double[] v2PointIn)
+	{
+		double[] vBack = new double[4];
+		double[] vForth = new double[4];
+
+		memcpy3(vBack, v2PointIn);
+		vBack[3] = 1.0;
+
+		m3dTransformVector4(vForth, vBack, m44ModelView);
+		m3dTransformVector4(vBack, vForth, m44Projection);
+
+		if (!m3dCloseEnough(vBack[3], 0.0, 0.000001)) {
+			double div = 1.0f / vBack[3];
+			vBack[0] *= div;
+			vBack[1] *= div;
+			vBack[2] *= div;
+		}
+
+		v2PointOut[0] = iViewPort[0] + (1.0 + vBack[0]) * iViewPort[2] / 2.0;
+		v2PointOut[1] = iViewPort[1] + (1.0 + vBack[1]) * iViewPort[3] / 2.0;
+
+		if (iViewPort[0] != 0)
+			v2PointOut[0] -= iViewPort[0];
+
+		if (iViewPort[1] != 0)
+			v2PointOut[1] -= iViewPort[1];
+
+		v2PointOut[2] = vBack[2];
+	}
+
+
+	/**
+	 * This function does a three dimensional Catmull-Rom curve interpolation.
+	 * Pass four points, and a floating point number between 0.0 and 1.0. The
+	 * curve is interpolated between the middle two points.
+	 * 
+	 * @param vec3Out
+	 * @param v3P0
+	 * @param v3P1
+	 * @param v3P2
+	 * @param v3P3
+	 * @param t
+	 */
+	public static void m3dCatmullRom(float[] vec3Out, float[] v3P0, float[] v3P1, float[] v3P2, float[] v3P3,
+			float t)
+	{
+		float t2 = t * t;
+		float t3 = t2 * t;
+
+		//@formatter:off
+
+	    // X    
+	    vec3Out[0] = 0.5f * ( ( 2.0f * v3P1[0]) +
+	                       (-v3P0[0] + v3P2[0]) * t +
+	                       (2.0f * v3P0[0] - 5.0f *v3P1[0] + 4.0f * v3P2[0] - v3P3[0]) * t2 +
+	                       (-v3P0[0] + 3.0f*v3P1[0] - 3.0f *v3P2[0] + v3P3[0]) * t3);
+	    // Y
+	    vec3Out[1] = 0.5f * ( ( 2.0f * v3P1[1]) +
+	                       (-v3P0[1] + v3P2[1]) * t +
+	                       (2.0f * v3P0[1] - 5.0f *v3P1[1] + 4.0f * v3P2[1] - v3P3[1]) * t2 +
+	                       (-v3P0[1] + 3.0f*v3P1[1] - 3.0f *v3P2[1] + v3P3[1]) * t3);
+
+	    // Z
+	    vec3Out[2] = 0.5f * ( ( 2.0f * v3P1[2]) +
+	                       (-v3P0[2] + v3P2[2]) * t +
+	                       (2.0f * v3P0[2] - 5.0f *v3P1[2] + 4.0f * v3P2[2] - v3P3[2]) * t2 +
+	                       (-v3P0[2] + 3.0f*v3P1[2] - 3.0f *v3P2[2] + v3P3[2]) * t3);
+	    //@formatter:on
+
+	}
+
+
+	/**
+	 * This function does a three dimensional Catmull-Rom curve interpolation.
+	 * Pass four points, and a floating point number between 0.0 and 1.0. The
+	 * curve is interpolated between the middle two points.
+	 * 
+	 * @param vec3Out
+	 * @param v3P0
+	 * @param v3P1
+	 * @param v3P2
+	 * @param v3P3
+	 * @param t
+	 */
+	public static void m3dCatmullRom(double[] vec3Out, double[] v3P0, double[] v3P1, double[] v3P2,
+			double[] v3P3, double t)
+	{
+		double t2 = t * t;
+		double t3 = t2 * t;
+
+		//@formatter:off
+
+	    // X    
+	    vec3Out[0] = 0.5f * ( ( 2.0f * v3P1[0]) +
+	                       (-v3P0[0] + v3P2[0]) * t +
+	                       (2.0f * v3P0[0] - 5.0f *v3P1[0] + 4.0f * v3P2[0] - v3P3[0]) * t2 +
+	                       (-v3P0[0] + 3.0f*v3P1[0] - 3.0f *v3P2[0] + v3P3[0]) * t3);
+	    // Y
+	    vec3Out[1] = 0.5f * ( ( 2.0f * v3P1[1]) +
+	                       (-v3P0[1] + v3P2[1]) * t +
+	                       (2.0f * v3P0[1] - 5.0f *v3P1[1] + 4.0f * v3P2[1] - v3P3[1]) * t2 +
+	                       (-v3P0[1] + 3.0f*v3P1[1] - 3.0f *v3P2[1] + v3P3[1]) * t3);
+
+	    // Z
+	    vec3Out[2] = 0.5f * ( ( 2.0f * v3P1[2]) +
+	                       (-v3P0[2] + v3P2[2]) * t +
+	                       (2.0f * v3P0[2] - 5.0f *v3P1[2] + 4.0f * v3P2[2] - v3P3[2]) * t2 +
+	                       (-v3P0[2] + 3.0f*v3P1[2] - 3.0f *v3P2[2] + v3P3[2]) * t3);
+	    //@formatter:on
+
 	}
 
 
@@ -1314,9 +1621,109 @@ public final class Math3D {
 	}
 
 
-	void m3dCalculateTangentBasis(float[] vTangent, float[][] pvTriangle, float[][] pvTexCoords, float[] N)
+	/**
+	 * Calculate the tangent basis for a triangle on the surface of a model.
+	 * This vector is needed for most normal mapping shaders.
+	 * 
+	 * @param vec3Tangent
+	 * @param v3x3Triangle
+	 * @param v2x3TexCoords
+	 * @param N
+	 */
+	public static void m3dCalculateTangentBasis(float[] vec3Tangent, float[][] v3x3Triangle,
+			float[][] v2x3TexCoords, float[] N)
 	{
-		// TODO
+		float[] dv2v1 = new float[3];
+		float[] dv3v1 = new float[3];
+		float dc2c1t, dc2c1b, dc3c1t, dc3c1b;
+		float M;
+
+		m3dSubtractVectors3(dv2v1, v3x3Triangle[1], v3x3Triangle[0]);
+		m3dSubtractVectors3(dv3v1, v3x3Triangle[2], v3x3Triangle[0]);
+
+		dc2c1t = v2x3TexCoords[1][0] - v2x3TexCoords[0][0];
+		dc2c1b = v2x3TexCoords[1][1] - v2x3TexCoords[0][1];
+		dc3c1t = v2x3TexCoords[2][0] - v2x3TexCoords[0][0];
+		dc3c1b = v2x3TexCoords[2][1] - v2x3TexCoords[0][1];
+
+		M = (dc2c1t * dc3c1b) - (dc3c1t * dc2c1b);
+		M = 1.0f / M;
+
+		m3dScaleVector3(dv2v1, dc3c1b);
+		m3dScaleVector3(dv3v1, dc2c1b);
+
+		m3dSubtractVectors3(vec3Tangent, dv2v1, dv3v1);
+		m3dScaleVector3(vec3Tangent, M); // This potentially changes the direction of the vector
+		m3dNormalizeVector3(vec3Tangent);
+
+		float[] B = new float[3];
+		m3dCrossProduct3(B, N, vec3Tangent);
+		m3dCrossProduct3(vec3Tangent, B, N);
+		m3dNormalizeVector3(vec3Tangent);
+	}
+
+
+	/**
+	 * Calculate the tangent basis for a triangle on the surface of a model.
+	 * This vector is needed for most normal mapping shaders.
+	 * 
+	 * @param vec3Tangent
+	 * @param v3x3Triangle
+	 * @param v2x3TexCoords
+	 * @param N
+	 */
+	public static void m3dCalculateTangentBasis(double[] vec3Tangent, double[][] v3x3Triangle,
+			double[][] v2x3TexCoords, double[] N)
+	{
+		double[] dv2v1 = new double[3];
+		double[] dv3v1 = new double[3];
+		double dc2c1t, dc2c1b, dc3c1t, dc3c1b;
+		double M;
+
+		m3dSubtractVectors3(dv2v1, v3x3Triangle[1], v3x3Triangle[0]);
+		m3dSubtractVectors3(dv3v1, v3x3Triangle[2], v3x3Triangle[0]);
+
+		dc2c1t = v2x3TexCoords[1][0] - v2x3TexCoords[0][0];
+		dc2c1b = v2x3TexCoords[1][1] - v2x3TexCoords[0][1];
+		dc3c1t = v2x3TexCoords[2][0] - v2x3TexCoords[0][0];
+		dc3c1b = v2x3TexCoords[2][1] - v2x3TexCoords[0][1];
+
+		M = (dc2c1t * dc3c1b) - (dc3c1t * dc2c1b);
+		M = 1.0f / M;
+
+		m3dScaleVector3(dv2v1, dc3c1b);
+		m3dScaleVector3(dv3v1, dc2c1b);
+
+		m3dSubtractVectors3(vec3Tangent, dv2v1, dv3v1);
+		m3dScaleVector3(vec3Tangent, M); // This potentially changes the direction of the vector
+		m3dNormalizeVector3(vec3Tangent);
+
+		double[] B = new double[3];
+		m3dCrossProduct3(B, N, vec3Tangent);
+		m3dCrossProduct3(vec3Tangent, B, N);
+		m3dNormalizeVector3(vec3Tangent);
+	}
+
+
+	/**
+	 * Smoothly step between 0 and 1 between edge1 and edge 2
+	 * 
+	 * @param edge1
+	 * @param edge2
+	 * @param x
+	 * @return
+	 */
+	public static float m3dSmoothStep(float edge1, float edge2, float x)
+	{
+		float t;
+		t = (x - edge1) / (edge2 - edge1);
+		if (t > 1.0f) {
+			t = 1.0f;
+		}
+		if (t < 0.0f) {
+			t = 0.0f;
+		}
+		return t * t * (3.0f - (2.0f * t));
 	}
 
 
@@ -1330,25 +1737,25 @@ public final class Math3D {
 	 */
 	public static double m3dSmoothStep(double edge1, double edge2, double x)
 	{
-		// TODO
-		return 0;
-	}
-
-
-	public static float m3dSmoothStep(float edge1, float edge2, float x)
-	{
-		// TODO
-		return 0;
-	}
-
-
-	public static void m3dMakePlanarShadowMatrix(double[] proj, double[] planeEq, double[] vLightPos)
-	{
-		// TODO
+		double t;
+		t = (x - edge1) / (edge2 - edge1);
+		if (t > 1.0) {
+			t = 1.0;
+		}
+		if (t < 0.0) {
+			t = 0.0;
+		}
+		return t * t * (3.0 - (2.0 * t));
 	}
 
 
 	public static void m3dMakePlanarShadowMatrix(float[] proj, float[] planeEq, float[] vLightPos)
+	{
+		// TODO
+	}
+
+
+	public static void m3dMakePlanarShadowMatrix(double[] proj, double[] planeEq, double[] vLightPos)
 	{
 		// TODO
 	}
