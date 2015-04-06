@@ -172,46 +172,46 @@ public final class Math3D {
 	}
 
 
-	public static void m3dCopyVector2(float[] dst, float[] src)
+	public static void m3dCopyVector2(float[] vec2Out, float[] vec2In)
 	{
-		memcpy2(dst, src);
+		memcpy2(vec2Out, vec2In);
 	}
 
 
-	public static void m3dCopyVector2(double[] dst, double[] src)
+	public static void m3dCopyVector2(double[] vec2Out, double[] vec2In)
 	{
-		memcpy2(dst, src);
+		memcpy2(vec2Out, vec2In);
 	}
 
 
-	public static void m3dCopyVector3(float[] dst, float[] src)
+	public static void m3dCopyVector3(float[] vec3Out, float[] vec3In)
 	{
-		memcpy3(dst, src);
+		memcpy3(vec3Out, vec3In);
 	}
 
 
-	public static void m3dCopyVector3(double[] dst, double[] src)
+	public static void m3dCopyVector3(double[] vec3Out, double[] vec3In)
 	{
-		memcpy3(dst, src);
+		memcpy3(vec3Out, vec3In);
 	}
 
 
-	public static void m3dCopyVector4(float[] dst, float[] src)
+	public static void m3dCopyVector4(float[] vec4Out, float[] vec4In)
 	{
-		memcpy4(dst, src);
+		memcpy4(vec4Out, vec4In);
 	}
 
 
-	public static void m3dCopyVector4(double[] dst, double[] src)
+	public static void m3dCopyVector4(double[] vec4Out, double[] vec4In)
 	{
-		memcpy4(dst, src);
+		memcpy4(vec4Out, vec4In);
 	}
 
 
-	public static void m3dAddVectors2(float[] r, float[] a, float[] b)
+	public static void m3dAddVectors2(float[] vec2Out, float[] vec2a, float[] vec2b)
 	{
-		r[0] = a[0] + b[0];
-		r[1] = a[1] + b[1];
+		vec2Out[0] = vec2a[0] + vec2b[0];
+		vec2Out[1] = vec2a[1] + vec2b[1];
 	}
 
 
@@ -343,20 +343,20 @@ public final class Math3D {
 	}
 
 
-	public static void m3dScaleVector4(double[] v, double scale)
+	public static void m3dScaleVector4(double[] vec4Out, double scale)
 	{
-		v[0] *= scale;
-		v[1] *= scale;
-		v[2] *= scale;
-		v[3] *= scale;
+		vec4Out[0] *= scale;
+		vec4Out[1] *= scale;
+		vec4Out[2] *= scale;
+		vec4Out[3] *= scale;
 	}
 
 
-	public static void m3dCrossProduct3(float[] result, float[] u, float[] v)
+	public static void m3dCrossProduct3(float[] vec3Out, float[] vec3a, float[] vec3b)
 	{
-		result[0] = u[1] * v[2] - v[1] * u[2];
-		result[1] = -u[0] * v[2] + v[0] * u[2];
-		result[2] = u[0] * v[1] - v[0] * u[1];
+		vec3Out[0] = vec3a[1] * vec3b[2] - vec3b[1] * vec3a[2];
+		vec3Out[1] = -vec3a[0] * vec3b[2] + vec3b[0] * vec3a[2];
+		vec3Out[2] = vec3a[0] * vec3b[1] - vec3b[0] * vec3a[1];
 	}
 
 
