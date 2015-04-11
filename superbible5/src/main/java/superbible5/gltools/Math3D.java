@@ -6,39 +6,190 @@ import static superbible5.gltools.C2J.*;
  * @author Ayco Holleman
  *
  */
-public final class Math3D {
+public class Math3D {
 
 	public static final double M3D_PI = Math.PI;
 	public static final double M3D_2PI = 2D * M3D_PI;
 	public static final double M3D_PI_DIV_180 = M3D_PI / 180D;
 	public static final double M3D_INV_PI_DIV_180 = 180D / M3D_PI;
 
-	/**
+	//@formatter:off
+	
+	/*
 	 * 3x3 identify matrix (float)
 	 */
-	public static final float[] IDENTITY_MAT33F = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 1.0f };
+	private static final float[] IDENTITY_MAT33F = new float[] {
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f
+	};
 
-	/**
+	/*
 	 * 3x3 identify matrix (double)
 	 */
-	public static final double[] IDENTITY_MAT33D = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
+	private static final double[] IDENTITY_MAT33D = new double[] {
+		1.0, 0.0, 0.0,
+		0.0, 1.0, 0.0,
+		0.0, 0.0, 1.0
+	};
 
-	/**
+	/*
 	 * 4x4 identify matrix (float)
 	 */
-	public static final float[] IDENTITY_MAT44F = new float[] { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f };
+	private static final float[] IDENTITY_MAT44F = new float[] {
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	};
 
-	/**
+	/*
 	 * 4x4 identify matrix (double)
 	 */
-	public static final double[] IDENTITY_MAT44D = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
+	private static final double[] IDENTITY_MAT44D = new double[] {
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 0.0, 0.0, 1.0
+	};
 
+	//@formatter:on
 
+	/*
+	 * Only static methods in this class. Do not instantiate.
+	 */
 	private Math3D()
 	{
+	}
+
+
+	/**
+	 * Returns a 3-element float array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DVector3f()
+	{
+		return new float[3];
+	}
+
+
+	/**
+	 * Returns a 3-element float array containing the specified values.
+	 * Syntactic sugar compensating for the fact that Java does not have
+	 * typedefs. This method is not in the original C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DVector3f(float x, float y, float z)
+	{
+		return new float[] { x, y, z };
+	}
+
+
+	/**
+	 * Returns a 3-element double array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static double[] M3DVector3d()
+	{
+		return new double[3];
+	}
+
+
+	/**
+	 * Returns a 3-element double array containing the specified values.
+	 * Syntactic sugar compensating for the fact that Java does not have
+	 * typedefs. This method is not in the original C library.
+	 * 
+	 * @return
+	 */
+	public static double[] M3DVector3d(double x, double y, double z)
+	{
+		return new double[] { x, y, z };
+	}
+
+
+	/**
+	 * Returns a 4-element float array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DVector4f()
+	{
+		return new float[4];
+	}
+
+
+	/**
+	 * Returns a 4-element double array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static double[] M3DVector4d()
+	{
+		return new double[4];
+	}
+
+
+	/**
+	 * Returns a 9-element float array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DMatrix33f()
+	{
+		return new float[9];
+	}
+
+
+	/**
+	 * Returns a 9-element double array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static double[] M3DMatrix33d()
+	{
+		return new double[9];
+	}
+
+
+	/**
+	 * Returns a 16-element float array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DMatrix44f()
+	{
+		return new float[16];
+	}
+
+
+	/**
+	 * Returns a 16-element double array. Syntactic sugar compensating for the
+	 * fact that Java does not have typedefs. This method is not in the original
+	 * C library.
+	 * 
+	 * @return
+	 */
+	public static double[] M3DMatrix44d()
+	{
+		return new double[16];
 	}
 
 
@@ -1197,8 +1348,8 @@ public final class Math3D {
 	 */
 	public static void m3dFindNormal(float[] vec3Out, float[] vec3a, float[] vec3b, float[] vec3c)
 	{
-		float[] vec3Tmp0 = new float[3];
-		float[] vec3Tmp1 = new float[3];
+		float[] vec3Tmp0 = M3DVector3f();
+		float[] vec3Tmp1 = M3DVector3f();
 
 		// Calculate two vectors from the three points. Assumes counter clockwise
 		// winding!
@@ -1218,8 +1369,8 @@ public final class Math3D {
 
 	public static void m3dFindNormal(double[] vec3Out, double[] vec3a, double[] vec3b, double[] vec3c)
 	{
-		double[] vec3Tmp0 = new double[3];
-		double[] vec3Tmp1 = new double[3];
+		double[] vec3Tmp0 = M3DVector3d();
+		double[] vec3Tmp1 = M3DVector3d();
 
 		vec3Tmp0[0] = vec3a[0] - vec3b[0];
 		vec3Tmp0[1] = vec3a[1] - vec3b[1];
@@ -1262,8 +1413,8 @@ public final class Math3D {
 	 */
 	public static void m3dGetPlaneEquation(float[] planeEq, float[] vec3a, float[] vec3b, float[] vec3c)
 	{
-		float[] v1 = new float[3];
-		float[] v2 = new float[3];
+		float[] v1 = M3DVector3f();
+		float[] v2 = M3DVector3f();
 
 		// V1 = p3 - p1
 		v1[0] = vec3c[0] - vec3a[0];
@@ -1285,8 +1436,8 @@ public final class Math3D {
 
 	public static void m3dGetPlaneEquation(double[] planeEq, double[] vec3a, double[] vec3b, double[] vec3c)
 	{
-		double[] v1 = new double[3];
-		double[] v2 = new double[3];
+		double[] v1 = M3DVector3d();
+		double[] v2 = M3DVector3d();
 
 		v1[0] = vec3c[0] - vec3a[0];
 		v1[1] = vec3c[1] - vec3a[1];
@@ -1313,7 +1464,7 @@ public final class Math3D {
 	{
 		//m3dNormalizeVector(ray);	// Make sure ray is unit length
 
-		float[] rayToCenter = new float[3]; // Ray to center of sphere
+		float[] rayToCenter = M3DVector3f(); // Ray to center of sphere
 		rayToCenter[0] = v3SphereCenter[0] - v3Point[0];
 		rayToCenter[1] = v3SphereCenter[1] - v3Point[1];
 		rayToCenter[2] = v3SphereCenter[2] - v3Point[2];
@@ -1345,7 +1496,7 @@ public final class Math3D {
 	{
 		//m3dNormalizeVector(ray);	// Make sure ray is unit length
 
-		double[] rayToCenter = new double[3]; // Ray to center of sphere
+		double[] rayToCenter = M3DVector3d(); // Ray to center of sphere
 		rayToCenter[0] = v3SphereCenter[0] - v3Point[0];
 		rayToCenter[1] = v3SphereCenter[1] - v3Point[1];
 		rayToCenter[2] = v3SphereCenter[2] - v3Point[2];
@@ -1379,8 +1530,8 @@ public final class Math3D {
 	public static void m3dProjectXY(float[] vec2Out, float[] m44ModelView, float[] m44Projection,
 			int[] iViewPort, float[] vec3In)
 	{
-		float[] v4Back = new float[4];
-		float[] v4Forth = new float[4];
+		float[] v4Back = M3DVector4f();
+		float[] v4Forth = M3DVector4f();
 
 		memcpy3(v4Back, vec3In);
 		v4Back[3] = 1.0f;
@@ -1419,8 +1570,8 @@ public final class Math3D {
 	public static void m3dProjectXY(double[] vec2Out, double[] m44ModelView, double[] m44Projection,
 			int[] iViewPort, double[] vec3In)
 	{
-		double[] v4Back = new double[4];
-		double[] v4Forth = new double[4];
+		double[] v4Back = M3DVector4d();
+		double[] v4Forth = M3DVector4d();
 
 		memcpy3(v4Back, vec3In);
 		v4Back[3] = 1.0;
@@ -1459,8 +1610,8 @@ public final class Math3D {
 	public static void m3dProjectXYZ(float[] v2PointOut, float[] m44ModelView, float[] m44Projection,
 			int[] iViewPort, float[] v2PointIn)
 	{
-		float[] vBack = new float[4];
-		float[] vForth = new float[4];
+		float[] vBack = M3DVector4f();
+		float[] vForth = M3DVector4f();
 
 		memcpy3(vBack, v2PointIn);
 		vBack[3] = 1.0f;
@@ -1500,8 +1651,8 @@ public final class Math3D {
 	public static void m3dProjectXYZ(double[] v2PointOut, double[] m44ModelView, double[] m44Projection,
 			int[] iViewPort, double[] v2PointIn)
 	{
-		double[] vBack = new double[4];
-		double[] vForth = new double[4];
+		double[] vBack = M3DVector4d();
+		double[] vForth = M3DVector4d();
 
 		memcpy3(vBack, v2PointIn);
 		vBack[3] = 1.0;
@@ -1635,8 +1786,8 @@ public final class Math3D {
 	public static void m3dCalculateTangentBasis(float[] vec3Tangent, float[][] v3x3Triangle,
 			float[][] v2x3TexCoords, float[] N)
 	{
-		float[] dv2v1 = new float[3];
-		float[] dv3v1 = new float[3];
+		float[] dv2v1 = M3DVector3f();
+		float[] dv3v1 = M3DVector3f();
 		float dc2c1t, dc2c1b, dc3c1t, dc3c1b;
 		float M;
 
@@ -1658,7 +1809,7 @@ public final class Math3D {
 		m3dScaleVector3(vec3Tangent, M); // This potentially changes the direction of the vector
 		m3dNormalizeVector3(vec3Tangent);
 
-		float[] B = new float[3];
+		float[] B = M3DVector3f();
 		m3dCrossProduct3(B, N, vec3Tangent);
 		m3dCrossProduct3(vec3Tangent, B, N);
 		m3dNormalizeVector3(vec3Tangent);
@@ -1677,8 +1828,8 @@ public final class Math3D {
 	public static void m3dCalculateTangentBasis(double[] vec3Tangent, double[][] v3x3Triangle,
 			double[][] v2x3TexCoords, double[] N)
 	{
-		double[] dv2v1 = new double[3];
-		double[] dv3v1 = new double[3];
+		double[] dv2v1 = M3DVector3d();
+		double[] dv3v1 = M3DVector3d();
 		double dc2c1t, dc2c1b, dc3c1t, dc3c1b;
 		double M;
 
@@ -1700,7 +1851,7 @@ public final class Math3D {
 		m3dScaleVector3(vec3Tangent, M); // This potentially changes the direction of the vector
 		m3dNormalizeVector3(vec3Tangent);
 
-		double[] B = new double[3];
+		double[] B = M3DVector3d();
 		m3dCrossProduct3(B, N, vec3Tangent);
 		m3dCrossProduct3(vec3Tangent, B, N);
 		m3dNormalizeVector3(vec3Tangent);
@@ -1854,7 +2005,7 @@ public final class Math3D {
 	public static float m3dClosestPointOnRay(float[] v3PointOnRay, float[] v3RayOrigin, float[] v3UnitRayDir,
 			float[] v3PointInSpace)
 	{
-		float[] vec3 = new float[3];
+		float[] vec3 = M3DVector3f();
 		m3dSubtractVectors3(vec3, v3PointInSpace, v3RayOrigin);
 		float t = m3dDotProduct3(v3UnitRayDir, vec3);
 		v3PointOnRay[0] = v3RayOrigin[0] + (t * v3UnitRayDir[0]);
@@ -1882,7 +2033,7 @@ public final class Math3D {
 	public static double m3dClosestPointOnRay(double[] v3PointOnRay, double[] v3RayOrigin,
 			double[] v3UnitRayDir, double[] v3PointInSpace)
 	{
-		double[] vec3 = new double[3];
+		double[] vec3 = M3DVector3d();
 		m3dSubtractVectors3(vec3, v3PointInSpace, v3RayOrigin);
 		double t = m3dDotProduct3(v3UnitRayDir, vec3);
 		v3PointOnRay[0] = v3RayOrigin[0] + (t * v3UnitRayDir[0]);
