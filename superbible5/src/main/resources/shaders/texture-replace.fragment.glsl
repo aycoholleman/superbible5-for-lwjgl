@@ -1,8 +1,7 @@
 #version 430 core
 
-uniform sampler2D textureUnit0;
-
 in vec2 vTex;
+uniform sampler2D textureUnit0;
 
 void main(void) 
 {
