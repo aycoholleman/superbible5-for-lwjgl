@@ -1,13 +1,17 @@
+#version 430 core
+
 
 uniform mat4 mvMatrix;
 uniform mat4 pMatrix;
 uniform vec3 vLightPos;
 uniform vec4 vColor;
-attribute vec4 vVertex;
-attribute vec3 vNormal;
-varying vec4 vFragColor;
-attribute vec2 vTexCoord0;
-varying vec2 vTex;
+
+layout(location=0) in vec4 vVertex;
+layout(location=1) in vec3 vNormal;
+layout(location=2) in vec2 vTexCoord0;
+
+out vec4 vFragColor;
+out vec2 vTex;
 
 void main(void)
 { 
