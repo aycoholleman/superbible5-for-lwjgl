@@ -8,11 +8,6 @@ import java.util.HashMap;
 
 public class GLShaderManager {
 
-	public static void main(String[] args)
-	{
-		System.out.println("xxx" + GLShaderManager.class.getResourceAsStream("/shaders/flat.fragment.glsl"));
-	}
-
 	public static final int GLT_SHADER_IDENTITY = 0;
 	public static final int GLT_SHADER_FLAT = 1;
 	public static final int GLT_SHADER_SHADED = 2;

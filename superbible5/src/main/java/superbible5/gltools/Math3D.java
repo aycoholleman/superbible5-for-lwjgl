@@ -3,7 +3,7 @@ package superbible5.gltools;
 import static superbible5.gltools.C2J.*;
 
 /**
- * @author Ayco Holleman
+ * @author ayco
  *
  */
 public class Math3D {
@@ -64,9 +64,48 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 3-element float array. Syntactic sugar compensating for the
-	 * fact that Java does not have typedefs. This method is not in the original
-	 * C library.
+	 * Returns a 2-element float array. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DVector2f()
+	{
+		return new float[2];
+	}
+
+
+	/**
+	 * Returns a 2-element float array containing the specified values.
+	 * Programmatic sugar compensating for the fact that Java, unlike C, does
+	 * not have typedefs. This method is not in the original C library.
+	 * 
+	 * @return
+	 */
+	public static float[] M3DVector2f(float x, float y)
+	{
+		return new float[] { x, y };
+	}
+
+
+	/**
+	 * Returns an array of 2-element float arrays. Programmatic sugar
+	 * compensating for the fact that Java, unlike C, does not have typedefs.
+	 * This method is not in the original C library.
+	 * 
+	 * @return
+	 */
+	public static float[][] M3DVector2fArray(int numElements)
+	{
+		return new float[numElements][2];
+	}
+
+
+	/**
+	 * Returns a 3-element float array. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
 	 * 
 	 * @return
 	 */
@@ -78,8 +117,8 @@ public class Math3D {
 
 	/**
 	 * Returns a 3-element float array containing the specified values.
-	 * Syntactic sugar compensating for the fact that Java does not have
-	 * typedefs. This method is not in the original C library.
+	 * Programmatic sugar compensating for the fact that Java, unlike C, does
+	 * not have typedefs. This method is not in the original C library.
 	 * 
 	 * @return
 	 */
@@ -90,9 +129,22 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 3-element double array. Syntactic sugar compensating for the
-	 * fact that Java does not have typedefs. This method is not in the original
-	 * C library.
+	 * Returns an array of 2-element float arrays. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
+	 * 
+	 * @return
+	 */
+	public static float[][] M3DVector3fArray(int numElements)
+	{
+		return new float[numElements][3];
+	}
+
+
+	/**
+	 * Returns a 3-element double array. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
 	 * 
 	 * @return
 	 */
@@ -104,8 +156,8 @@ public class Math3D {
 
 	/**
 	 * Returns a 3-element double array containing the specified values.
-	 * Syntactic sugar compensating for the fact that Java does not have
-	 * typedefs. This method is not in the original C library.
+	 * Programmatic sugar compensating for the fact that Java, unlike C, does
+	 * not have typedefs. This method is not in the original C library.
 	 * 
 	 * @return
 	 */
@@ -116,9 +168,9 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 4-element float array. Syntactic sugar compensating for the
-	 * fact that Java does not have typedefs. This method is not in the original
-	 * C library.
+	 * Returns a 4-element float array. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
 	 * 
 	 * @return
 	 */
@@ -129,9 +181,9 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 4-element double array. Syntactic sugar compensating for the
-	 * fact that Java does not have typedefs. This method is not in the original
-	 * C library.
+	 * Returns a 4-element double array. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
 	 * 
 	 * @return
 	 */
@@ -142,9 +194,9 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 9-element float array. Syntactic sugar compensating for the
-	 * fact that Java does not have typedefs. This method is not in the original
-	 * C library.
+	 * Returns a 9-element float array. Programmatic sugar compensating for the
+	 * fact that Java, unlike C, does not have typedefs. This method is not in
+	 * the original C library.
 	 * 
 	 * @return
 	 */
@@ -155,7 +207,7 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 9-element double array. Syntactic sugar compensating for the
+	 * Returns a 9-element double array. Programmatic sugar compensating for the
 	 * fact that Java does not have typedefs. This method is not in the original
 	 * C library.
 	 * 
@@ -168,7 +220,7 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 16-element float array. Syntactic sugar compensating for the
+	 * Returns a 16-element float array. Programmatic sugar compensating for the
 	 * fact that Java does not have typedefs. This method is not in the original
 	 * C library.
 	 * 
@@ -181,9 +233,9 @@ public class Math3D {
 
 
 	/**
-	 * Returns a 16-element double array. Syntactic sugar compensating for the
-	 * fact that Java does not have typedefs. This method is not in the original
-	 * C library.
+	 * Returns a 16-element double array. Programmatic sugar compensating for
+	 * the fact that Java does not have typedefs. This method is not in the
+	 * original C library.
 	 * 
 	 * @return
 	 */

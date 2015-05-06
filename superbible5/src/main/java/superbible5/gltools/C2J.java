@@ -1,5 +1,11 @@
 package superbible5.gltools;
 
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
+import org.lwjgl.BufferUtils;
+
 /**
  * Utility class with C-ish methods, used to make the Java code look as much as
  * possible like the original C/C++code.
@@ -9,16 +15,88 @@ package superbible5.gltools;
  */
 public class C2J {
 
+	/**
+	 * Size in bytes of a float (4 bytes).
+	 */
+	public static final int SIZE_OF_FLOAT = 4;
+	/**
+	 * Size in bytes of a double (8 bytes).
+	 */
+	public static final int SIZE_OF_DOUBLE = 8;
+
+
 	private C2J()
 	{
 	}
 
 
 	/**
+	 * Get size in bytes of the specified array
+	 * 
+	 * @param array
+	 *            The array whose size in bytes to measure
+	 * @return
+	 */
+	public static int sizeOf(float[] array)
+	{
+		return array.length << 2;
+	}
+
+
+	/**
+	 * Get size in bytes of the specified two-dimensional array. Assumes rows
+	 * all have the same length.
+	 * 
+	 * @param array
+	 *            The array whose size in bytes to measure
+	 * @return
+	 */
+	public static int sizeOf(float[][] array)
+	{
+		if (array.length == 0) {
+			return 0;
+		}
+		return (array.length * array[0].length) << 2;
+	}
+
+
+	/**
+	 * Get size in bytes of the specified array
+	 * 
+	 * @param array
+	 *            The array whose size in bytes to measure
+	 * @return
+	 */
+	public static int sizeOf(double[] array)
+	{
+		return array.length << 3;
+	}
+
+
+	/**
+	 * Get size in bytes of the specified two-dimensional array. Assumes rows
+	 * all have the same length.
+	 * 
+	 * @param array
+	 *            The array whose size in bytes to measure
+	 * @return
+	 */
+	public static int sizeOf(double[][] array)
+	{
+		if (array.length == 0) {
+			return 0;
+		}
+		return (array.length * array[0].length) << 3;
+	}
+
+
+	/**
 	 * Copy first two array elements of {@code src} to {@code dst}.
 	 * 
-	 * @param dst The destination (write-to) array
-	 * @param src The source (read-from) array
+	 * @param dst
+	 *            The destination (write-to) array
+	 * @param src
+	 *            The source (read-from) array
 	 */
 	public static void memcpy2(float[] dst, float[] src)
 	{
@@ -30,8 +108,10 @@ public class C2J {
 	/**
 	 * Copy first two array elements of {@code src} to {@code dst}.
 	 * 
-	 * @param dst The destination (write-to) array
-	 * @param src The source (read-from) array
+	 * @param dst
+	 *            The destination (write-to) array
+	 * @param src
+	 *            The source (read-from) array
 	 */
 	public static void memcpy2(double[] dst, double[] src)
 	{
@@ -295,6 +375,124 @@ public class C2J {
 	public static void memcpy16(double[] dst, double[] src)
 	{
 		memcpy16(dst, 0, src, 0);
+	}
+
+
+	public static void buffer(IntBuffer buffer, int[] elements)
+	{
+		buffer.clear();
+		buffer.put(elements);
+		buffer.flip();
+	}
+
+
+	/**
+	 * Copies the specified array of vectors to the specified {@code Buffer}.
+	 * Each row in the array is assumed to be a two-component vector (i.e. an
+	 * array of length 2). The {@code Buffer} is cleared before copying and
+	 * flipped after copying.
+	 * 
+	 * @param buffer
+	 *            The buffer to copy the vectors to
+	 * @param vectors
+	 *            The vectors
+	 */
+	public static void bufferVectors2(FloatBuffer buffer, float[][] vectors)
+	{
+		// First squash two-dimensional array into a one-dimensional
+		// array
+		float[] flat = new float[2 * vectors.length];
+		int i = 0;
+		for (float[] vec : vectors) {
+			flat[i++] = vec[0];
+			flat[i++] = vec[1];
+		}
+		buffer.clear();
+		buffer.put(flat);
+		buffer.flip();
+	}
+
+
+	/**
+	 * Copies the specified array of vectors to the specified {@code Buffer}.
+	 * Each row in the array is assumed to be a two-component vector (i.e. an
+	 * array of length 2). The {@code Buffer} is cleared before copying and
+	 * flipped after copying.
+	 * 
+	 * @param buffer
+	 *            The buffer to copy the vectors to
+	 * @param vectors
+	 *            The vectors
+	 */
+	public static void bufferVectors2(DoubleBuffer buffer, double[][] vectors)
+	{
+		// First squash two-dimensional array into a one-dimensional
+		// array
+		double[] flat = new double[2 * vectors.length];
+		int i = 0;
+		for (double[] vec : vectors) {
+			flat[i++] = vec[0];
+			flat[i++] = vec[1];
+		}
+		buffer.clear();
+		buffer.put(flat);
+		buffer.flip();
+	}
+
+
+	/**
+	 * Copies the specified array of vectors to the specified {@code Buffer}.
+	 * Each row in the array is assumed to be a three-component vector (i.e. an
+	 * array of length 3). The {@code Buffer} is cleared before copying and
+	 * flipped after copying.
+	 * 
+	 * @param buffer
+	 *            The buffer to copy the vectors to
+	 * @param vectors
+	 *            The vectors
+	 */
+	public static void bufferVectors3(FloatBuffer buffer, float[][] vectors)
+	{
+		// First squash two-dimensional array into a one-dimensional
+		// array
+		float[] flat = new float[3 * vectors.length];
+		int i = 0;
+		for (float[] vec : vectors) {
+			flat[i++] = vec[0];
+			flat[i++] = vec[1];
+			flat[i++] = vec[2];
+		}
+		buffer.clear();
+		buffer.put(flat);
+		buffer.flip();
+	}
+
+
+	/**
+	 * Copies the specified array of vectors to the specified {@code Buffer}.
+	 * Each row in the array is assumed to be a three-component vector (i.e. an
+	 * array of length 3). The {@code Buffer} is cleared before copying and
+	 * flipped after copying.
+	 * 
+	 * @param buffer
+	 *            The buffer to copy the vectors to
+	 * @param vectors
+	 *            The vectors
+	 */
+	public static void bufferVectors3(DoubleBuffer buffer, double[][] vectors)
+	{
+		// First squash two-dimensional array into a one-dimensional
+		// array
+		double[] flat = new double[3 * vectors.length];
+		int i = 0;
+		for (double[] vec : vectors) {
+			flat[i++] = vec[0];
+			flat[i++] = vec[1];
+			flat[i++] = vec[2];
+		}
+		buffer.clear();
+		buffer.put(flat);
+		buffer.flip();
 	}
 
 
