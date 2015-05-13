@@ -5,10 +5,10 @@ import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
-
 import superbible5.gltools.GLFrustum;
 import superbible5.gltools.GLShaderManager;
 import superbible5.gltools.GLTriangleBatch;
+import static superbible5.gltools.Math3D.*;
 
 public class ModelViewProjection {
 
@@ -33,4 +33,34 @@ public class ModelViewProjection {
 		viewFrustum.SetPerspective(35.0f, (float) w / (float) h, 1.0f, 1000.0f);
 	}
 
+
+	// Called to draw scene
+	void RenderScene(float yRot)
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		float[] mTranslate = M3DMatrix44f();
+		float[] mRotate = M3DMatrix44f();
+		float[] mModelview = M3DMatrix44f();
+		float[] mModelViewProjection = M3DMatrix44f();
+
+		// Create a translation matrix to move the torus back and into sight
+		m3dTranslationMatrix44(mTranslate, 0.0f, 0.0f, -2.5f);
+
+		// Create a rotation matrix based on the current value of yRot
+		m3dRotationMatrix44(mRotate, m3dDegToRad(yRot), 0.0f, 1.0f, 0.0f);
+
+		// Add the rotation to the translation, store the result in mModelView
+		m3dMatrixMultiply44(mModelview, mTranslate, mRotate);
+
+		// Add the modelview matrix to the projection matrix, 
+		// the final matrix is the ModelViewProjection matrix.
+		m3dMatrixMultiply44(mModelViewProjection, viewFrustum.GetProjectionMatrix(), mModelview);
+
+		// Pass this completed matrix to the shader, and render the torus
+		float vBlack[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		shaderManager.UseStockShader(GLT_SHADER_FLAT, mModelViewProjection, vBlack);
+		torusBatch.Draw();
+
+	}
 }

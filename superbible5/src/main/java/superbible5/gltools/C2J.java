@@ -386,6 +386,15 @@ public class C2J {
 	}
 
 
+	public static FloatBuffer buffer(float[] elements)
+	{
+		FloatBuffer buf = BufferUtils.createFloatBuffer(elements.length);
+		buf.put(elements);
+		buf.flip();
+		return buf;
+	}
+
+
 	/**
 	 * Copies the specified array of vectors to the specified {@code Buffer}.
 	 * Each row in the array is assumed to be a two-component vector (i.e. an
@@ -397,7 +406,7 @@ public class C2J {
 	 * @param vectors
 	 *            The vectors
 	 */
-	public static void bufferVectors2(FloatBuffer buffer, float[][] vectors)
+	public static void bufferVec2Array(FloatBuffer buffer, float[][] vectors)
 	{
 		// First squash two-dimensional array into a one-dimensional
 		// array

@@ -182,7 +182,7 @@ public class GLTriangleBatch {
 		// Texture coordinates
 		glBindBuffer(GL_ARRAY_BUFFER, bufferObjects.get(TEXTURE_DATA));
 		glEnableVertexAttribArray(GLT_ATTRIBUTE_TEXTURE0);
-		bufferVectors2(pTexCoordsBuffer, pTexCoords);
+		bufferVec2Array(pTexCoordsBuffer, pTexCoords);
 		glBufferData(GL_ARRAY_BUFFER, pTexCoordsBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(GLT_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, false, 0, 0);
 

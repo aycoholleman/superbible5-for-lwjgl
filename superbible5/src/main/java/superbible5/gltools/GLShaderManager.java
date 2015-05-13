@@ -2,7 +2,12 @@ package superbible5.gltools;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL30.*;
 import static superbible5.gltools.GLTools.*;
+import static superbible5.gltools.Math3D.*;
+import static superbible5.gltools.C2J.*;
 
 import java.util.HashMap;
 
@@ -71,6 +76,44 @@ public class GLShaderManager {
 				glDeleteProgram(uiStockShaders[i]);
 			}
 		}
+	}
+
+
+	///////////////////////////////////////////////////////////////////////
+	//Use a specific stock shader, and set the appropriate uniforms
+	int UseStockShader(final int nShaderID, Object... uniforms)
+	{
+		// Check for out of bounds
+		if (nShaderID >= GLT_SHADER_LAST)
+			return -1;
+
+		// Bind to the correct shader
+		glUseProgram(uiStockShaders[nShaderID]);
+
+		// Set up the uniforms
+		int iTransform, iModelMatrix, iProjMatrix, iColor, iLight, iTextureUnit;
+		int iInteger;
+
+		float[] mvpMatrix = M3DMatrix44f();
+		float[] pMatrix = M3DMatrix44f();
+		float[] mvMatrix = M3DMatrix44f();
+		float[] vColor = M3DVector4f();
+		float[] vLightPos = M3DVector3f();
+
+		switch (nShaderID) {
+			case GLT_SHADER_FLAT: // Just the modelview projection matrix and the color
+				iTransform = glGetUniformLocation(uiStockShaders[nShaderID], "mvpMatrix");
+				mvpMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iTransform, false, buffer(mvpMatrix));
+				//glUniformMatrix4fv(iTransform, 1, GL_FALSE, mvpMatrix);
+
+				//									iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				//									vColor = va_arg(uniformList, M3DVector4f*);
+				//									glUniform4fv(iColor, 1, *vColor);
+				break;
+		}
+
+		return uiStockShaders[nShaderID];
 	}
 
 
