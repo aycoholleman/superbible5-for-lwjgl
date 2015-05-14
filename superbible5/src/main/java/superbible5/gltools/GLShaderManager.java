@@ -2,12 +2,9 @@ package superbible5.gltools;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL30.*;
+import static superbible5.gltools.C2J.*;
 import static superbible5.gltools.GLTools.*;
 import static superbible5.gltools.Math3D.*;
-import static superbible5.gltools.C2J.*;
 
 import java.util.HashMap;
 
@@ -101,16 +98,28 @@ public class GLShaderManager {
 		float[] vLightPos = M3DVector3f();
 
 		switch (nShaderID) {
+
 			case GLT_SHADER_FLAT: // Just the modelview projection matrix and the color
 				iTransform = glGetUniformLocation(uiStockShaders[nShaderID], "mvpMatrix");
 				mvpMatrix = (float[]) uniforms[0];
 				glUniformMatrix4(iTransform, false, buffer(mvpMatrix));
-				//glUniformMatrix4fv(iTransform, 1, GL_FALSE, mvpMatrix);
 
-				//									iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
-				//									vColor = va_arg(uniformList, M3DVector4f*);
-				//									glUniform4fv(iColor, 1, *vColor);
+				iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				vColor = (float[]) uniforms[1];
+				glUniform4(iColor, buffer(vColor));
 				break;
+
+			case GLT_SHADER_TEXTURE_RECT_REPLACE:
+			case GLT_SHADER_TEXTURE_REPLACE: // Just the texture place
+				iTransform = glGetUniformLocation(uiStockShaders[nShaderID], "mvpMatrix");
+				mvpMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iTransform, false, buffer(mvpMatrix));
+
+				iTextureUnit = glGetUniformLocation(uiStockShaders[nShaderID], "textureUnit0");
+				iInteger = (int) uniforms[1];
+				glUniform1i(iTextureUnit, iInteger);
+				break;
+
 		}
 
 		return uiStockShaders[nShaderID];
