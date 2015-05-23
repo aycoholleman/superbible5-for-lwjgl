@@ -91,11 +91,11 @@ public class GLShaderManager {
 		int iTransform, iModelMatrix, iProjMatrix, iColor, iLight, iTextureUnit;
 		int iInteger;
 
-		float[] mvpMatrix = M3DMatrix44f();
-		float[] pMatrix = M3DMatrix44f();
-		float[] mvMatrix = M3DMatrix44f();
-		float[] vColor = M3DVector4f();
-		float[] vLightPos = M3DVector3f();
+		float[] mvpMatrix; //mat4x4
+		float[] pMatrix; //mat4x4
+		float[] mvMatrix; //mat4x4
+		float[] vColor; //vec4
+		float[] vLightPos; //vec3
 
 		switch (nShaderID) {
 
@@ -120,6 +120,85 @@ public class GLShaderManager {
 				glUniform1i(iTextureUnit, iInteger);
 				break;
 
+			case GLT_SHADER_TEXTURE_MODULATE: // Multiply the texture by the geometry color
+				iTransform = glGetUniformLocation(uiStockShaders[nShaderID], "mvpMatrix");
+				mvpMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iTransform, false, buffer(mvpMatrix));
+
+				iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				vColor = (float[]) uniforms[1];
+				glUniform4(iColor, buffer(vColor));
+
+				iTextureUnit = glGetUniformLocation(uiStockShaders[nShaderID], "textureUnit0");
+				iInteger = (int) uniforms[2];
+				glUniform1i(iTextureUnit, iInteger);
+				break;
+
+			case GLT_SHADER_DEFAULT_LIGHT:
+				iModelMatrix = glGetUniformLocation(uiStockShaders[nShaderID], "mvMatrix");
+				mvMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iModelMatrix, false, buffer(mvMatrix));
+
+				iProjMatrix = glGetUniformLocation(uiStockShaders[nShaderID], "pMatrix");
+				pMatrix = (float[]) uniforms[1];
+				glUniformMatrix4(iProjMatrix, false, buffer(pMatrix));
+
+				iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				vColor = (float[]) uniforms[2];
+				glUniform4(iColor, buffer(vColor));
+				break;
+
+			case GLT_SHADER_POINT_LIGHT_DIFF:
+				iModelMatrix = glGetUniformLocation(uiStockShaders[nShaderID], "mvMatrix");
+				mvMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iModelMatrix, false, buffer(mvMatrix));
+
+				iProjMatrix = glGetUniformLocation(uiStockShaders[nShaderID], "pMatrix");
+				pMatrix = (float[]) uniforms[1];
+				glUniformMatrix4(iProjMatrix, false, buffer(pMatrix));
+
+				iLight = glGetUniformLocation(uiStockShaders[nShaderID], "vLightPos");
+				vLightPos = (float[]) uniforms[2];
+				glUniform3(iLight, buffer(vLightPos));
+
+				iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				vColor = (float[]) uniforms[3];
+				glUniform4(iColor, buffer(vColor));
+				break;
+
+			case GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF:
+				iModelMatrix = glGetUniformLocation(uiStockShaders[nShaderID], "mvMatrix");
+				mvMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iModelMatrix, false, buffer(mvMatrix));
+
+				iProjMatrix = glGetUniformLocation(uiStockShaders[nShaderID], "pMatrix");
+				pMatrix = (float[]) uniforms[1];
+				glUniformMatrix4(iProjMatrix, false, buffer(pMatrix));
+
+				iLight = glGetUniformLocation(uiStockShaders[nShaderID], "vLightPos");
+				vLightPos = (float[]) uniforms[2];
+				glUniform3(iLight, buffer(vLightPos));
+
+				iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				vColor = (float[]) uniforms[3];
+				glUniform4(iColor, buffer(vColor));
+
+				iTextureUnit = glGetUniformLocation(uiStockShaders[nShaderID], "textureUnit0");
+				iInteger = (int) uniforms[4];
+				glUniform1i(iTextureUnit, iInteger);
+				break;
+
+			case GLT_SHADER_SHADED: // Just the modelview projection matrix. Color is an attribute
+				iTransform = glGetUniformLocation(uiStockShaders[nShaderID], "mvpMatrix");
+				pMatrix = (float[]) uniforms[0];
+				glUniformMatrix4(iTransform, false, buffer(pMatrix));
+				break;
+
+			case GLT_SHADER_IDENTITY: // Just the Color
+				iColor = glGetUniformLocation(uiStockShaders[nShaderID], "vColor");
+				vColor = (float[]) uniforms[3];
+				glUniform4(iColor, buffer(vColor));
+				break;
 		}
 
 		return uiStockShaders[nShaderID];
