@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import static superbible5.gltools.C2J.*;
 import static superbible5.gltools.GLTools.*;
-import static superbible5.gltools.Math3D.*;
 
 import java.util.HashMap;
 
@@ -78,7 +77,7 @@ public class GLShaderManager {
 
 	///////////////////////////////////////////////////////////////////////
 	//Use a specific stock shader, and set the appropriate uniforms
-	int UseStockShader(final int nShaderID, Object... uniforms)
+	public int UseStockShader(final int nShaderID, Object... uniforms)
 	{
 		// Check for out of bounds
 		if (nShaderID >= GLT_SHADER_LAST)

@@ -9,6 +9,7 @@ import superbible5.gltools.GLFrustum;
 import superbible5.gltools.GLShaderManager;
 import superbible5.gltools.GLTriangleBatch;
 import static superbible5.gltools.Math3D.*;
+import static superbible5.gltools.GLShaderManager.*;
 
 public class ModelViewProjection {
 

@@ -8,7 +8,11 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
+
 public class GLTools {
+
+	private static final String ERR_ERROR_IN_SHADER_FILE = "Error compiling shader file %s: %s";
+	private static final String ERR_ERROR_CREATING_PROGRAM = "Error creating shader program: %s";
 
 	private GLTools()
 	{
@@ -43,21 +47,20 @@ public class GLTools {
 
 		// Compile them
 		glCompileShader(hVertexShader);
-		glCompileShader(hFragmentShader);
-
-		// Check for errors
-		int testVal = glGetShaderi(hVertexShader, GL_COMPILE_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteShader(hVertexShader);
+		if (glGetShaderi(hVertexShader, GL_COMPILE_STATUS) == GL_FALSE) {
+			String fmt = ERR_ERROR_IN_SHADER_FILE;
+			String msg = String.format(fmt, szVertexSrc, glGetShaderInfoLog(hVertexShader, 2048));
 			glDeleteShader(hFragmentShader);
-			return 0;
+			throw new RuntimeException(msg);
 		}
-
-		testVal = glGetShaderi(hFragmentShader, GL_COMPILE_STATUS);
-		if (testVal == GL_FALSE) {
+				
+		glCompileShader(hFragmentShader);
+		if (glGetShaderi(hFragmentShader, GL_COMPILE_STATUS) == GL_FALSE) {
+			String fmt = ERR_ERROR_IN_SHADER_FILE;
+			String msg = String.format(fmt, szFragmentSrc, glGetShaderInfoLog(hFragmentShader, 2048));
 			glDeleteShader(hVertexShader);
 			glDeleteShader(hFragmentShader);
-			return 0;
+			throw new RuntimeException(msg);
 		}
 
 		// Link them - assuming it works...
@@ -76,12 +79,17 @@ public class GLTools {
 		// These are no longer needed
 		glDeleteShader(hVertexShader);
 		glDeleteShader(hFragmentShader);
-
-		// Make sure link worked too
-		testVal = glGetProgrami(hReturn, GL_LINK_STATUS);
-		if (testVal == GL_FALSE) {
+		
+		if (glGetProgrami(hReturn, GL_LINK_STATUS) == GL_FALSE) {
+			String msg = String.format(ERR_ERROR_CREATING_PROGRAM, glGetShaderInfoLog(hReturn, 2048));
 			glDeleteProgram(hReturn);
-			return 0;
+			throw new RuntimeException(msg);
+		}
+		glValidateProgram(hReturn);
+		if (glGetProgrami(hReturn, GL_VALIDATE_STATUS) == GL_FALSE) {
+			String msg = String.format(ERR_ERROR_CREATING_PROGRAM, glGetShaderInfoLog(hReturn));
+			glDeleteProgram(hReturn);
+			throw new RuntimeException(msg);
 		}
 
 		return hReturn;
@@ -90,7 +98,7 @@ public class GLTools {
 
 	/*
 	 * Load shader source from file. The one big diversion from the original C
-	 * code!!! There all stock shader stored as strings within the
+	 * code! There all stock shader are stored as string constants within
 	 * GLShaderManager.cpp
 	 */
 	private static void gltLoadShaderSrc(String shaderFile, int shader)
