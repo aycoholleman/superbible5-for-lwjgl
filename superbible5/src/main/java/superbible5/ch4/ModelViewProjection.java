@@ -1,26 +1,27 @@
 package superbible5.ch4;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static superbible5.gltools.GLShaderManager.*;
+import static superbible5.gltools.GLTools.*;
+import static superbible5.gltools.Math3D.*;
+//import static org.lwjgl.opengl.GL13.*;
+//import static org.lwjgl.opengl.GL15.*;
+//import static org.lwjgl.opengl.GL20.*;
+//import static org.lwjgl.opengl.GL30.*;
 import superbible5.gltools.GLFrustum;
 import superbible5.gltools.GLShaderManager;
 import superbible5.gltools.GLTriangleBatch;
-import static superbible5.gltools.Math3D.*;
-import static superbible5.gltools.GLShaderManager.*;
 
 public class ModelViewProjection {
 
 	// Global view frustum class
-	GLFrustum viewFrustum;
+	GLFrustum viewFrustum = new GLFrustum();
 
 	// The shader manager
-	GLShaderManager shaderManager;
+	GLShaderManager shaderManager = new GLShaderManager();
 
 	// The torus
-	GLTriangleBatch torusBatch;
+	GLTriangleBatch torusBatch = new GLTriangleBatch(2048);
 
 
 	// Set up the viewport and the projection matrix
@@ -63,5 +64,17 @@ public class ModelViewProjection {
 		shaderManager.UseStockShader(GLT_SHADER_FLAT, mModelViewProjection, vBlack);
 		torusBatch.Draw();
 
+	}
+
+
+	void SetupRC()
+	{
+		// Black background
+		glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+		glEnable(GL_DEPTH_TEST);
+		shaderManager.InitializeStockShaders();
+		// This makes a torus
+		gltMakeTorus(torusBatch, 0.4f, 0.15f, 30, 30);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 }

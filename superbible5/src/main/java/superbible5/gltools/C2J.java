@@ -8,7 +8,8 @@ import org.lwjgl.BufferUtils;
 
 /**
  * Utility class with C-ish methods, used to make the Java code look as much as
- * possible like the original C/C++code.
+ * possible like the original C/C++code, and to make the original C/C++ code as
+ * copy-pastable as possible.
  * 
  * @author ayco
  *
@@ -37,7 +38,7 @@ public class C2J {
 	 *            The array whose size in bytes to measure
 	 * @return
 	 */
-	public static int sizeOf(float[] array)
+	public static int sizeof(float[] array)
 	{
 		return array.length << 2;
 	}
@@ -51,7 +52,7 @@ public class C2J {
 	 *            The array whose size in bytes to measure
 	 * @return
 	 */
-	public static int sizeOf(float[][] array)
+	public static int sizeof(float[][] array)
 	{
 		if (array.length == 0) {
 			return 0;
@@ -67,7 +68,7 @@ public class C2J {
 	 *            The array whose size in bytes to measure
 	 * @return
 	 */
-	public static int sizeOf(double[] array)
+	public static int sizeof(double[] array)
 	{
 		return array.length << 3;
 	}
@@ -81,7 +82,7 @@ public class C2J {
 	 *            The array whose size in bytes to measure
 	 * @return
 	 */
-	public static int sizeOf(double[][] array)
+	public static int sizeof(double[][] array)
 	{
 		if (array.length == 0) {
 			return 0;

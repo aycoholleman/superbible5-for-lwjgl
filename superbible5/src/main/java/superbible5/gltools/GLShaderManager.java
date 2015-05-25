@@ -204,7 +204,7 @@ public class GLShaderManager {
 	}
 
 
-	boolean InitializeStockShaders()
+	public boolean InitializeStockShaders()
 	{
 		// Be warned, going over 128 shaders may cause a
 		// hickup for a reallocation.

@@ -47,10 +47,8 @@ public class GLTriangleBatch {
 	 * {@code nMaxVerts} argument (the maximum number of vertices you expect the
 	 * triangle batch to have), and not the {@link #BeginMesh(int)} method. This
 	 * is because LWJGL ultimately wants {@code java.nio.Buffer} objects to pass
-	 * on to OpenGL. As recommended in the javadocs for
-	 * {@code java.nio.ByteBuffer}, we want those objects to be long-lived,
-	 * rather than be destroyed and re-created by each call to {@code BeginMesh}
-	 * .
+	 * on to OpenGL. We want those objects to be long-lived, rather than be
+	 * destroyed and re-created by each call to {@code BeginMesh} .
 	 * 
 	 * @param nMaxVerts
 	 */
@@ -86,8 +84,11 @@ public class GLTriangleBatch {
 	 * far better than shreading your heap with STL containers... At least
 	 * that's my humble opinion.
 	 */
-	public void BeginMesh()
+	public void BeginMesh(int maxVerts)
 	{
+		if (maxVerts > nMaxIndexes) {
+			throw new RuntimeException("Too many vertices for this triangle batch");
+		}
 		nNumIndexes = 0;
 		nNumVerts = 0;
 		pIndexesBuffer.clear();
