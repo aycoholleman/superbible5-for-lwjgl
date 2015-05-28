@@ -21,7 +21,7 @@ public class ModelViewProjection {
 	GLShaderManager shaderManager = new GLShaderManager();
 
 	// The torus
-	GLTriangleBatch torusBatch = new GLTriangleBatch(2048);
+	GLTriangleBatch torusBatch = new GLTriangleBatch(10000);
 
 
 	// Set up the viewport and the projection matrix

@@ -10,6 +10,8 @@ public class ModelViewProjectionLWJGL extends Animation {
 		anim.start();
 
 	}
+	
+	private ModelViewProjection modelViewProjection;
 
 	public ModelViewProjectionLWJGL()
 	{
@@ -21,18 +23,21 @@ public class ModelViewProjectionLWJGL extends Animation {
 	{
 		// TODO Auto-generated method stub
 		super.init();
+		modelViewProjection = new ModelViewProjection();
+		modelViewProjection.SetupRC();
 	}
 
 	@Override
 	protected void update(float delta)
 	{
-		System.out.println("update: " + delta);
 	}
 
 	@Override
 	protected void render(float delta)
 	{
-		System.out.println("render: " + delta);
+		delta *= 60000;
+		modelViewProjection.RenderScene(delta);
+		//System.out.println("render: " + delta);
 	}
 
 

@@ -211,31 +211,32 @@ public class GLShaderManager {
 		//	shaderTable.reserve(128);
 
 		uiStockShaders[GLT_SHADER_IDENTITY] = gltLoadShaderPairSrcWithAttributes(szIdentityShaderVP,
-				szIdentityShaderFP, 1, GLT_ATTRIBUTE_VERTEX, "vVertex");
-		uiStockShaders[GLT_SHADER_FLAT] = gltLoadShaderPairSrcWithAttributes(szFlatShaderVP, szFlatShaderFP,
-				1, GLT_ATTRIBUTE_VERTEX, "vVertex");
-		uiStockShaders[GLT_SHADER_SHADED] = gltLoadShaderPairSrcWithAttributes(szShadedVP, szShadedFP, 2,
-				GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_COLOR, "vColor");
-
-		uiStockShaders[GLT_SHADER_DEFAULT_LIGHT] = gltLoadShaderPairSrcWithAttributes(szDefaultLightVP,
-				szDefaultLightFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
-
-		uiStockShaders[GLT_SHADER_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(szPointLightDiffVP,
-				szPointLightDiffFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
-
-		uiStockShaders[GLT_SHADER_TEXTURE_REPLACE] = gltLoadShaderPairSrcWithAttributes(szTextureReplaceVP,
-				szTextureReplaceFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
-
-		uiStockShaders[GLT_SHADER_TEXTURE_MODULATE] = gltLoadShaderPairSrcWithAttributes(szTextureModulateVP,
-				szTextureModulateFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
-
-		uiStockShaders[GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(
-				szTexturePointLightDiffVP, szTexturePointLightDiffFP, 3, GLT_ATTRIBUTE_VERTEX, "vVertex",
-				GLT_ATTRIBUTE_NORMAL, "vNormal", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
-
-		uiStockShaders[GLT_SHADER_TEXTURE_RECT_REPLACE] = gltLoadShaderPairSrcWithAttributes(
-				szTextureRectReplaceVP, szTextureRectReplaceFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex",
-				GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+				szIdentityShaderFP, GLT_ATTRIBUTE_VERTEX, "vVertex");
+		
+//		uiStockShaders[GLT_SHADER_FLAT] = gltLoadShaderPairSrcWithAttributes(szFlatShaderVP, szFlatShaderFP,
+//				1, GLT_ATTRIBUTE_VERTEX, "vVertex");
+//		uiStockShaders[GLT_SHADER_SHADED] = gltLoadShaderPairSrcWithAttributes(szShadedVP, szShadedFP, 2,
+//				GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_COLOR, "vColor");
+//
+//		uiStockShaders[GLT_SHADER_DEFAULT_LIGHT] = gltLoadShaderPairSrcWithAttributes(szDefaultLightVP,
+//				szDefaultLightFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
+//
+//		uiStockShaders[GLT_SHADER_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(szPointLightDiffVP,
+//				szPointLightDiffFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
+//
+//		uiStockShaders[GLT_SHADER_TEXTURE_REPLACE] = gltLoadShaderPairSrcWithAttributes(szTextureReplaceVP,
+//				szTextureReplaceFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+//
+//		uiStockShaders[GLT_SHADER_TEXTURE_MODULATE] = gltLoadShaderPairSrcWithAttributes(szTextureModulateVP,
+//				szTextureModulateFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+//
+//		uiStockShaders[GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(
+//				szTexturePointLightDiffVP, szTexturePointLightDiffFP, 3, GLT_ATTRIBUTE_VERTEX, "vVertex",
+//				GLT_ATTRIBUTE_NORMAL, "vNormal", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+//
+//		uiStockShaders[GLT_SHADER_TEXTURE_RECT_REPLACE] = gltLoadShaderPairSrcWithAttributes(
+//				szTextureRectReplaceVP, szTextureRectReplaceFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex",
+//				GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
 
 		if (uiStockShaders[0] != 0)
 			return true;

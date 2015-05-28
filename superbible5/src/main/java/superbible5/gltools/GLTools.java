@@ -1,15 +1,14 @@
 package superbible5.gltools;
 
+import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
-import static java.lang.Math.*;
-import static superbible5.gltools.Math3D.*;
 import static superbible5.gltools.C2J.*;
+import static superbible5.gltools.Math3D.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
+import java.io.InputStream;
 
 public class GLTools {
 
@@ -71,7 +70,7 @@ public class GLTools {
 		glAttachShader(hReturn, hVertexShader);
 		glAttachShader(hReturn, hFragmentShader);
 
-		for (int i = 0; i < attrs.length; ++i) {
+		for (int i = 0; i < attrs.length; i += 2) {
 			int index = (Integer) attrs[i];
 			String szNextArg = (String) attrs[i + 1];
 			glBindAttribLocation(hReturn, index, szNextArg);
@@ -99,8 +98,8 @@ public class GLTools {
 	}
 
 
-	public static void gltMakeTorus(GLTriangleBatch torusBatch, float majorRadius, float minorRadius, int numMajor,
-			int numMinor)
+	public static void gltMakeTorus(GLTriangleBatch torusBatch, float majorRadius, float minorRadius,
+			int numMajor, int numMinor)
 	{
 		double majorStep = 2.0f * M3D_PI / numMajor;
 		double minorStep = 2.0f * M3D_PI / numMinor;
@@ -200,14 +199,26 @@ public class GLTools {
 	 */
 	private static void gltLoadShaderSrc(String shaderFile, int shader)
 	{
-		byte[] bytes;
+		InputStream is = GLTools.class.getResourceAsStream("/shaders/" + shaderFile);
+		String source = fromInputStream(is);
+		glShaderSource(shader, source);
+	}
+
+
+	public static String fromInputStream(InputStream is)
+	{
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		int n;
+		byte[] data = new byte[384];
 		try {
-			bytes = Files.readAllBytes(FileSystems.getDefault().getPath(shaderFile));
-			String source = new String(bytes, Charset.forName("UTF-8"));
-			glShaderSource(shader, source);
+			while ((n = is.read(data, 0, data.length)) != -1) {
+				buffer.write(data, 0, n);
+			}
+			buffer.flush();
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		return new String(buffer.toByteArray());
 	}
 }
