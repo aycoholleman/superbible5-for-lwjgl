@@ -129,9 +129,9 @@ public class Math3D {
 
 
 	/**
-	 * Returns an array of 2-element float arrays. Programmatic sugar compensating for the
-	 * fact that Java, unlike C, does not have typedefs. This method is not in
-	 * the original C library.
+	 * Returns an array of 2-element float arrays. Programmatic sugar
+	 * compensating for the fact that Java, unlike C, does not have typedefs.
+	 * This method is not in the original C library.
 	 * 
 	 * @return
 	 */
@@ -229,6 +229,12 @@ public class Math3D {
 	public static float[] M3DMatrix44f()
 	{
 		return new float[16];
+	}
+
+
+	public static float[][] M3DMatrix44fArray(int length)
+	{
+		return new float[length][16];
 	}
 
 

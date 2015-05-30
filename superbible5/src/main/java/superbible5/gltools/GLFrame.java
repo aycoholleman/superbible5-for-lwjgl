@@ -205,6 +205,12 @@ public class GLFrame {
 	}
 
 
+	void GetMatrix(float[] mat44)
+	{
+		GetMatrix(mat44, false);
+	}
+
+
 	/**
 	 * Assemble the matrix
 	 * 
