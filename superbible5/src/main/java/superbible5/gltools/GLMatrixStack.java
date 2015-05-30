@@ -79,7 +79,7 @@ public class GLMatrixStack {
 	}
 
 
-	void PopMatrix()
+	public void PopMatrix()
 	{
 		if (stackPointer > 0) {
 			stackPointer--;
@@ -90,7 +90,7 @@ public class GLMatrixStack {
 	}
 
 
-	void Scale(float x, float y, float z)
+	public void Scale(float x, float y, float z)
 	{
 		float[] mTemp = M3DMatrix44f();
 		float[] mScale = M3DMatrix44f();
@@ -100,7 +100,7 @@ public class GLMatrixStack {
 	}
 
 
-	void Translate(float x, float y, float z)
+	public void Translate(float x, float y, float z)
 	{
 		float[] mTemp = M3DMatrix44f();
 		float[] mScale = M3DMatrix44f();
@@ -110,7 +110,7 @@ public class GLMatrixStack {
 	}
 
 
-	void Rotate(float angle, float x, float y, float z)
+	public void Rotate(float angle, float x, float y, float z)
 	{
 		float[] mTemp = M3DMatrix44f();
 		float[] mRotate = M3DMatrix44f();
@@ -120,7 +120,7 @@ public class GLMatrixStack {
 	}
 
 
-	void Scalev(float[] vec3Scale)
+	public void Scalev(float[] vec3Scale)
 	{
 		float[] mTemp = M3DMatrix44f();
 		float[] mScale = M3DMatrix44f();
@@ -130,7 +130,7 @@ public class GLMatrixStack {
 	}
 
 
-	void Translatev(float[] vev3Translate)
+	public void Translatev(float[] vev3Translate)
 	{
 		float[] mTemp = M3DMatrix44f();
 		float[] mTranslate = M3DMatrix44f();
@@ -141,12 +141,52 @@ public class GLMatrixStack {
 	}
 
 
-	void Rotatev(float angle, float[] vec3Axis)
+	public void Rotatev(float angle, float[] vec3Axis)
 	{
 		float[] mTemp = M3DMatrix44f();
 		float[] mRotation = M3DMatrix44f();
 		m3dRotationMatrix44(mRotation, m3dDegToRad(angle), vec3Axis[0], vec3Axis[1], vec3Axis[2]);
 		m3dCopyMatrix44(mTemp, pStack[stackPointer]);
 		m3dMatrixMultiply44(pStack[stackPointer], mTemp, mRotation);
+	}
+
+
+	public void PushMatrix(float[] mMatrix)
+	{
+		if (stackPointer < stackDepth) {
+			stackPointer++;
+			m3dCopyMatrix44(pStack[stackPointer], mMatrix);
+		}
+		else {
+			lastError = GLT_STACK_OVERFLOW;
+		}
+	}
+
+
+	public void PushMatrix(GLFrame frame)
+	{
+		float[] m = M3DMatrix44f();
+		frame.GetMatrix(m);
+		PushMatrix(m);
+	}
+
+
+	public float[] GetMatrix()
+	{
+		return pStack[stackPointer];
+	}
+
+
+	public void GetMatrix(float[] mMatrix)
+	{
+		m3dCopyMatrix44(mMatrix, pStack[stackPointer]);
+	}
+
+
+	public GLT_STACK_ERROR GetLastError()
+	{
+		GLT_STACK_ERROR retval = lastError;
+		lastError = GLT_STACK_NOERROR;
+		return retval;
 	}
 }
