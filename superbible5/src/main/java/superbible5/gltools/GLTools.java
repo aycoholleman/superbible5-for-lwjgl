@@ -34,6 +34,8 @@ public class GLTools {
 	public static int gltLoadShaderPairSrcWithAttributes(String szVertexSrc, String szFragmentSrc,
 			Object... attrs)
 	{
+
+		System.out.println("Loading " + szVertexSrc + ", " + szFragmentSrc);
 		// Temporary Shader objects
 		int hVertexShader;
 		int hFragmentShader;

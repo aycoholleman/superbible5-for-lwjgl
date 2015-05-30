@@ -212,31 +212,31 @@ public class GLShaderManager {
 
 		uiStockShaders[GLT_SHADER_IDENTITY] = gltLoadShaderPairSrcWithAttributes(szIdentityShaderVP,
 				szIdentityShaderFP, GLT_ATTRIBUTE_VERTEX, "vVertex");
-		
-//		uiStockShaders[GLT_SHADER_FLAT] = gltLoadShaderPairSrcWithAttributes(szFlatShaderVP, szFlatShaderFP,
-//				1, GLT_ATTRIBUTE_VERTEX, "vVertex");
-//		uiStockShaders[GLT_SHADER_SHADED] = gltLoadShaderPairSrcWithAttributes(szShadedVP, szShadedFP, 2,
-//				GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_COLOR, "vColor");
-//
-//		uiStockShaders[GLT_SHADER_DEFAULT_LIGHT] = gltLoadShaderPairSrcWithAttributes(szDefaultLightVP,
-//				szDefaultLightFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
-//
-//		uiStockShaders[GLT_SHADER_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(szPointLightDiffVP,
-//				szPointLightDiffFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
-//
-//		uiStockShaders[GLT_SHADER_TEXTURE_REPLACE] = gltLoadShaderPairSrcWithAttributes(szTextureReplaceVP,
-//				szTextureReplaceFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
-//
-//		uiStockShaders[GLT_SHADER_TEXTURE_MODULATE] = gltLoadShaderPairSrcWithAttributes(szTextureModulateVP,
-//				szTextureModulateFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
-//
-//		uiStockShaders[GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(
-//				szTexturePointLightDiffVP, szTexturePointLightDiffFP, 3, GLT_ATTRIBUTE_VERTEX, "vVertex",
-//				GLT_ATTRIBUTE_NORMAL, "vNormal", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
-//
-//		uiStockShaders[GLT_SHADER_TEXTURE_RECT_REPLACE] = gltLoadShaderPairSrcWithAttributes(
-//				szTextureRectReplaceVP, szTextureRectReplaceFP, 2, GLT_ATTRIBUTE_VERTEX, "vVertex",
-//				GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+
+		uiStockShaders[GLT_SHADER_FLAT] = gltLoadShaderPairSrcWithAttributes(szFlatShaderVP, szFlatShaderFP,
+				GLT_ATTRIBUTE_VERTEX, "vVertex");
+		uiStockShaders[GLT_SHADER_SHADED] = gltLoadShaderPairSrcWithAttributes(szShadedVP, szShadedFP,
+				GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_COLOR, "vColor");
+
+		uiStockShaders[GLT_SHADER_DEFAULT_LIGHT] = gltLoadShaderPairSrcWithAttributes(szDefaultLightVP,
+				szDefaultLightFP, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
+
+		uiStockShaders[GLT_SHADER_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(szPointLightDiffVP,
+				szPointLightDiffFP, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_NORMAL, "vNormal");
+
+		uiStockShaders[GLT_SHADER_TEXTURE_REPLACE] = gltLoadShaderPairSrcWithAttributes(szTextureReplaceVP,
+				szTextureReplaceFP, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+
+		uiStockShaders[GLT_SHADER_TEXTURE_MODULATE] = gltLoadShaderPairSrcWithAttributes(szTextureModulateVP,
+				szTextureModulateFP, GLT_ATTRIBUTE_VERTEX, "vVertex", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+
+		uiStockShaders[GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF] = gltLoadShaderPairSrcWithAttributes(
+				szTexturePointLightDiffVP, szTexturePointLightDiffFP, GLT_ATTRIBUTE_VERTEX, "vVertex",
+				GLT_ATTRIBUTE_NORMAL, "vNormal", GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
+
+		uiStockShaders[GLT_SHADER_TEXTURE_RECT_REPLACE] = gltLoadShaderPairSrcWithAttributes(
+				szTextureRectReplaceVP, szTextureRectReplaceFP, GLT_ATTRIBUTE_VERTEX, "vVertex",
+				GLT_ATTRIBUTE_TEXTURE0, "vTexCoord0");
 
 		if (uiStockShaders[0] != 0)
 			return true;
@@ -253,266 +253,4 @@ public class GLShaderManager {
 		return uiStockShaders[nShaderID];
 	}
 
-
-	/**
-	 * Load a shader pair from file. The shader pair root is added to the shader
-	 * lookup table and can be found again if necessary with LookupShader.
-	 * 
-	 * @param szVertexProgFileName
-	 * @param szFragProgFileName
-	 * @return
-	 */
-	public int LoadShaderPair(String szVertexProgFileName, String szFragProgFileName)
-	{
-		ShaderLookupEntry shaderEntry = new ShaderLookupEntry();
-
-		// Make sure it's not already loaded
-		int uiReturn = LookupShader(szVertexProgFileName, szFragProgFileName);
-		if (uiReturn != 0)
-			return uiReturn;
-
-		// Load shader and test for fail
-		shaderEntry.uiShaderID = gltLoadShaderPair(szVertexProgFileName, szFragProgFileName);
-		if (shaderEntry.uiShaderID == 0)
-			return 0;
-
-		// Add to the table
-		shaderEntry.szVertexShaderName = szVertexProgFileName;
-		shaderEntry.szFragShaderName = szFragProgFileName;
-		return shaderEntry.uiShaderID;
-	}
-
-
-	private int gltLoadShaderPair(String szVertexProgFileName, String szFragProgFileName)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	/**
-	 * Load shaders from source text. If the szName is NULL, just make it and
-	 * return the handle (useful for stock shaders). Otherwize, make sure it's
-	 * not already there, then add to list
-	 * 
-	 * @param szName
-	 * @param szVertexSrc
-	 * @param szFragSrc
-	 * @return
-	 */
-	public int LoadShaderPairSrc(String szName, String szVertexSrc, String szFragSrc)
-	{
-		// Just make it and return
-		if (szName == null)
-			return gltLoadShaderPairSrc(szVertexSrc, szFragSrc);
-
-		// It has a name, check for duplicate
-		int uiShader = LookupShader(szName, szName);
-		if (uiShader != 0)
-			return uiShader;
-
-		// Ok, make it and add to table
-		ShaderLookupEntry shaderEntry = new ShaderLookupEntry();
-		shaderEntry.uiShaderID = gltLoadShaderPairSrc(szVertexSrc, szFragSrc);
-		if (shaderEntry.uiShaderID == 0)
-			return 0; // Game over, won't compile
-
-		// Add it...
-		shaderEntry.szVertexShaderName = szName;
-		shaderEntry.szFragShaderName = szName;
-		return shaderEntry.uiShaderID;
-	}
-
-
-	private int LookupShader(String szName, String szName2)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	private int gltLoadShaderPairSrc(String szVertexSrc, String szFragSrc)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	/**
-	 * Load the shader file, with the supplied named attributes.
-	 * 
-	 * @param szVertexProgFileName
-	 * @param szFragmentProgFileName
-	 * @param attributes
-	 * @return
-	 */
-	public int LoadShaderPairWithAttributes(String szVertexProgFileName, String szFragmentProgFileName,
-			String... attributes)
-	{
-		ShaderLookupEntry shaderEntry = new ShaderLookupEntry();
-
-		// Temporary Shader objects
-		int hVertexShader;
-		int hFragmentShader;
-		int testVal;
-
-		// Create shader objects
-		hVertexShader = glCreateShader(GL_VERTEX_SHADER);
-		hFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		// Load them. If fail clean up and return null
-		if (gltLoadShaderFile(szVertexProgFileName, hVertexShader) == false) {
-			glDeleteShader(hVertexShader);
-			glDeleteShader(hFragmentShader);
-			return 0;
-		}
-
-		if (gltLoadShaderFile(szFragmentProgFileName, hFragmentShader) == false) {
-			glDeleteShader(hVertexShader);
-			glDeleteShader(hFragmentShader);
-			return 0;
-		}
-
-		// Compile them
-		glCompileShader(hVertexShader);
-		glCompileShader(hFragmentShader);
-
-		// Check for errors
-		testVal = glGetShaderi(hVertexShader, GL_COMPILE_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteShader(hVertexShader);
-			glDeleteShader(hFragmentShader);
-			return 0;
-		}
-
-		testVal = glGetShaderi(hFragmentShader, GL_COMPILE_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteShader(hVertexShader);
-			glDeleteShader(hFragmentShader);
-			return 0;
-		}
-
-		// Link them - assuming it works...
-		shaderEntry.uiShaderID = glCreateProgram();
-		glAttachShader(shaderEntry.uiShaderID, hVertexShader);
-		glAttachShader(shaderEntry.uiShaderID, hFragmentShader);
-
-		for (int i = 0; i < attributes.length; ++i) {
-			glBindAttribLocation(shaderEntry.uiShaderID, i, attributes[i]);
-		}
-
-		glLinkProgram(shaderEntry.uiShaderID);
-
-		// These are no longer needed
-		glDeleteShader(hVertexShader);
-		glDeleteShader(hFragmentShader);
-
-		// Make sure link worked too
-		testVal = glGetProgrami(shaderEntry.uiShaderID, GL_LINK_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteProgram(shaderEntry.uiShaderID);
-			return 0;
-		}
-
-		// Add it...
-		shaderEntry.szVertexShaderName = szVertexProgFileName;
-		shaderEntry.szFragShaderName = szFragmentProgFileName;
-		return shaderEntry.uiShaderID;
-	}
-
-
-	private boolean gltLoadShaderFile(String szVertexProgFileName, int hVertexShader)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	/**
-	 * Load the shader from source, with the supplied named attributes
-	 * 
-	 * @param szName
-	 * @param szVertexProg
-	 * @param szFragmentProg
-	 * @param attributes
-	 * @return
-	 */
-	public int LoadShaderPairSrcWithAttributes(String szName, String szVertexProg, String szFragmentProg,
-			String... attributes)
-	{
-
-		ShaderLookupEntry shaderEntry = programs.get(szName);
-		if (shaderEntry != null) {
-			return shaderEntry.uiShaderID;
-		}
-
-		// Temporary Shader objects
-		int hVertexShader;
-		int hFragmentShader;
-		int testVal;
-
-		// Create shader objects
-		hVertexShader = glCreateShader(GL_VERTEX_SHADER);
-		hFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		// Load them. 
-		gltLoadShaderSrc(szVertexProg, hVertexShader);
-		gltLoadShaderSrc(szFragmentProg, hFragmentShader);
-
-		// Compile them
-		glCompileShader(hVertexShader);
-		glCompileShader(hFragmentShader);
-
-		// Check for errors
-		testVal = glGetShaderi(hVertexShader, GL_COMPILE_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteShader(hVertexShader);
-			glDeleteShader(hFragmentShader);
-			return 0;
-		}
-
-		testVal = glGetShaderi(hFragmentShader, GL_COMPILE_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteShader(hVertexShader);
-			glDeleteShader(hFragmentShader);
-			return 0;
-		}
-
-		shaderEntry = new ShaderLookupEntry();
-
-		// Link them - assuming it works...
-		shaderEntry.uiShaderID = glCreateProgram();
-		glAttachShader(shaderEntry.uiShaderID, hVertexShader);
-		glAttachShader(shaderEntry.uiShaderID, hFragmentShader);
-
-		for (int i = 0; i < attributes.length; ++i) {
-			glBindAttribLocation(shaderEntry.uiShaderID, i, attributes[i]);
-		}
-
-		glLinkProgram(shaderEntry.uiShaderID);
-
-		// These are no longer needed
-		glDeleteShader(hVertexShader);
-		glDeleteShader(hFragmentShader);
-
-		// Make sure link worked too
-		testVal = glGetProgrami(shaderEntry.uiShaderID, GL_LINK_STATUS);
-		if (testVal == GL_FALSE) {
-			glDeleteProgram(shaderEntry.uiShaderID);
-			return 0;
-		}
-
-		// Add it...
-		shaderEntry.szVertexShaderName = szName;
-		shaderEntry.szFragShaderName = szName;
-		programs.put(szVertexProg, shaderEntry);
-		return shaderEntry.uiShaderID;
-	}
-
-
-	private void gltLoadShaderSrc(String szVertexProg, int hVertexShader)
-	{
-		// TODO Auto-generated method stub
-
-	}
 }

@@ -4,9 +4,10 @@ uniform mat4 mvMatrix;
 uniform mat4 pMatrix;
 uniform vec4 vColor;
 
-layout(location=0) in vec4 vFragColor;
-layout(location=1) in vec4 vVertex;
-layout(location=2) in vec3 vNormal;
+in vec4 vVertex;
+in vec3 vNormal;
+
+out vec4 vFragColor;
 
 void main(void)
 { 
