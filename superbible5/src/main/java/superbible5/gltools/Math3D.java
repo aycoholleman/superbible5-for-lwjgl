@@ -535,6 +535,14 @@ public class Math3D {
 	}
 
 
+	public static void m3dScaleVector3(float[] v, int offset, float scale)
+	{
+		v[offset + 0] *= scale;
+		v[offset + 1] *= scale;
+		v[offset + 2] *= scale;
+	}
+
+
 	public static void m3dScaleVector3(double[] v, double scale)
 	{
 		v[0] *= scale;
@@ -630,6 +638,12 @@ public class Math3D {
 	public static void m3dNormalizeVector3(float[] u)
 	{
 		m3dScaleVector3(u, 1.0f / m3dGetVectorLength3(u));
+	}
+
+
+	public static void m3dNormalizeVector3(float[] u, int offset)
+	{
+		m3dScaleVector3(u, offset, 1.0f / m3dGetVectorLength3(u));
 	}
 
 
