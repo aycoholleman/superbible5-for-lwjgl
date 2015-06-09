@@ -28,10 +28,10 @@ public class GLBatch {
 
 	boolean bBatchDone; // Batch has been built
 
-	float[] pVerts; /* vec3 */
-	float[] pNormals; /* vec3 */
-	float[] pColors; /* vec4 */
-	float[][] pTexCoords; /* vec2 array */
+	float[][] pVerts; /* vec3 */
+	float[][] pNormals; /* vec3 */
+	float[][] pColors; /* vec4 */
+	float[][][] pTexCoords; /* vec2 array */
 
 
 	public GLBatch()
@@ -50,12 +50,7 @@ public class GLBatch {
 		if (nNumTextureUnits != 0) {
 			uiTextureCoordArray = new int[nNumTextureUnits];
 			// An array of pointers to texture coordinate arrays
-			pTexCoords = M3DVector2fArray(nNumTextureUnits);
-			/*
-			 * Just really unnecessary in Java: for (int i = 0; i <
-			 * nNumTextureUnits; i++) { uiTextureCoordArray[i] = 0;
-			 * pTexCoords[i] = null; }
-			 */
+			pTexCoords = new float[nNumTextureUnits][][];
 		}
 		vertexArrayObject = glGenVertexArrays();
 		glBindVertexArray(vertexArrayObject);
@@ -221,4 +216,89 @@ public class GLBatch {
 		glBindVertexArray(0);
 	}
 
+
+	/**
+	 * Just start over. No reallocations, etc.
+	 */
+	public void Reset()
+	{
+		bBatchDone = false;
+		nVertsBuilding = 0;
+	}
+
+
+	public void Vertex3f(float x, float y, float z)
+	{
+		checkNumVertices();
+		pVerts[nVertsBuilding][0] = x;
+		pVerts[nVertsBuilding][1] = y;
+		pVerts[nVertsBuilding][2] = z;
+		nVertsBuilding++;
+	}
+
+
+	public void Vertex3fv(float[] vec3Vertex)
+	{
+		checkNumVertices();
+		memcpy3(pVerts[nVertsBuilding], vec3Vertex);
+		nVertsBuilding++;
+	}
+
+
+	public void Normal3fv(float[] vec3Normal)
+	{
+		checkNumVertices();
+		memcpy3(pNormals[nVertsBuilding], vec3Normal);
+	}
+
+
+	public void Color4f(float r, float g, float b, float a)
+	{
+		checkNumVertices();
+		pColors[nVertsBuilding][0] = r;
+		pColors[nVertsBuilding][1] = g;
+		pColors[nVertsBuilding][2] = b;
+		pColors[nVertsBuilding][3] = a;
+	}
+
+
+	public void Color4fv(float[] vColor)
+	{
+		checkNumVertices();
+		memcpy4(pColors[nVertsBuilding], vColor);
+	}
+
+
+	public void MultiTexCoord2f(int texture, float s, float t)
+	{
+		checkNumVertices();
+		pTexCoords[texture][nVertsBuilding][0] = s;
+		pTexCoords[texture][nVertsBuilding][1] = t;
+	}
+
+
+	public void MultiTexCoord2fv(int texture, float[] vTexCoord)
+	{
+		checkNumVertices();
+		memcpy2(pTexCoords[texture][nVertsBuilding], vTexCoord);
+	}
+
+
+	public void Draw()
+	{
+		if (!bBatchDone) {
+			return;
+		}
+		glBindVertexArray(vertexArrayObject);
+		glDrawArrays(primitiveType, 0, nNumVerts);
+		glBindVertexArray(0);
+	}
+
+
+	private void checkNumVertices()
+	{
+		if (nVertsBuilding >= nNumVerts) {
+			throw new RuntimeException("Buffer overflow. Too many vertices: " + nVertsBuilding);
+		}
+	}
 }
